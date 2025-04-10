@@ -19,14 +19,23 @@ SERVICE_NAME := providers
 .protoc-generate:
 	mkdir -p $(PKG_PROTO_PATH)
 	protoc --proto_path=$(CURDIR) \
-	--go_out=$(PKG_PROTO_PATH) --go_opt paths=source_relative \
-	--go-grpc_out=$(PKG_PROTO_PATH) --go-grpc_opt paths=source_relative \
+	--go_out=$(PKG_PROTO_PATH) --go_opt=paths=source_relative \
+	--go-grpc_out=$(PKG_PROTO_PATH) --go-grpc_opt=paths=source_relative \
 	$(PROTO_PATH)/$(SERVICE_NAME)/service.proto \
 	$(PROTO_PATH)/$(SERVICE_NAME)/messages.proto
 
 # установка нужных зависимостей
 .tidy:
 	go mod tidy
+
+# тестовые запросы с помощью grpcurl
+grpc-provider-save:
+	grpcurl -plaintext -d '{"id": "kuper", "name": "Купер"}' \
+	localhost:8080 github.com.classydevv.metro_fulfillment.providers.ProvidersService.SaveProvider
+grpc-provider-list-all:
+	grpcurl -plaintext -d '' \
+	localhost:8080 github.com.classydevv.metro_fulfillment.providers.ProvidersService.ListProviders
+
 
 generate: .bin-deps .protoc-generate .tidy
 
