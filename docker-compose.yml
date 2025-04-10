@@ -1,0 +1,22 @@
+services:
+  providers:
+    build: 
+      context: .
+      dockerfile: ./build/package/providers/Dockerfile
+    command: /main
+    ports:
+      - 8080:8080
+  logistics:
+    build: 
+      context: .
+      dockerfile: ./build/package/logistics/Dockerfile
+    command: /main
+    ports:
+      - 8081:8081
+  order:
+    build: 
+      context: .
+      dockerfile: ./build/package/order/Dockerfile
+    command: /main
+    ports:
+      - 8082:8082
