@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package github.com.classydevv.metro_fulfillment.providers;
+
+option go_package = "github.com/classydevv/metro-fulfillment/pkg/api/providers";
+
+// Provider - full provider model
+message Provider {
+    // id - идентификатор провайдера
+    string id = 1 [json_name = "id"];
+    // name - название провайдера
+    string name = 2 [json_name = "name"];
+}
+
+message SaveProviderRequest {
+    // id - идентификатор провайдера
+    string id = 1 [json_name = "id"];
+    // name - название провайдера
+    string name = 2 [json_name = "name"];
+}
+
+message SaveProviderResponse {
+    // id - идентификатор провайдера
+    string id = 1 [json_name = "id"];
+}
+
+message ListProvidersRequest {}
+
+message ListProvidersResponse {
+    repeated Provider providers = 1 [json_name = "providers"];
+}

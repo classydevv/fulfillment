@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package github.com.classydevv.metro_fulfillment.providers;
+
+import "api/providers/messages.proto";
+
+option go_package = "github.com/classydevv/metro-fulfillment/pkg/api/providers";
+
+service ProvidersService {
+    rpc SaveProvider(SaveProviderRequest) returns (SaveProviderResponse) {}
+    rpc ListProviders(ListProvidersRequest) returns (ListProvidersResponse) {}
+}
