@@ -19,8 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ProvidersService_SaveProvider_FullMethodName  = "/github.com.classydevv.metro_fulfillment.providers.ProvidersService/SaveProvider"
-	ProvidersService_ListProviders_FullMethodName = "/github.com.classydevv.metro_fulfillment.providers.ProvidersService/ListProviders"
+	ProvidersService_SaveProvider_FullMethodName  = "/github.com.classydevv.fulfillment.providers.ProvidersService/SaveProvider"
+	ProvidersService_ListProviders_FullMethodName = "/github.com.classydevv.fulfillment.providers.ProvidersService/ListProviders"
 )
 
 // ProvidersServiceClient is the client API for ProvidersService service.
@@ -142,7 +142,7 @@ func _ProvidersService_ListProviders_Handler(srv interface{}, ctx context.Contex
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ProvidersService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "github.com.classydevv.metro_fulfillment.providers.ProvidersService",
+	ServiceName: "github.com.classydevv.fulfillment.providers.ProvidersService",
 	HandlerType: (*ProvidersServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

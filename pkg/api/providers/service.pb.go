@@ -24,22 +24,22 @@ var File_api_providers_service_proto protoreflect.FileDescriptor
 
 const file_api_providers_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1bapi/providers/service.proto\x121github.com.classydevv.metro_fulfillment.providers\x1a\x1capi/providers/messages.proto2\xdd\x02\n" +
-	"\x10ProvidersService\x12\xa1\x01\n" +
-	"\fSaveProvider\x12F.github.com.classydevv.metro_fulfillment.providers.SaveProviderRequest\x1aG.github.com.classydevv.metro_fulfillment.providers.SaveProviderResponse\"\x00\x12\xa4\x01\n" +
-	"\rListProviders\x12G.github.com.classydevv.metro_fulfillment.providers.ListProvidersRequest\x1aH.github.com.classydevv.metro_fulfillment.providers.ListProvidersResponse\"\x00B;Z9github.com/classydevv/metro-fulfillment/pkg/api/providersb\x06proto3"
+	"\x1bapi/providers/service.proto\x12+github.com.classydevv.fulfillment.providers\x1a\x1capi/providers/messages.proto2\xc5\x02\n" +
+	"\x10ProvidersService\x12\x95\x01\n" +
+	"\fSaveProvider\x12@.github.com.classydevv.fulfillment.providers.SaveProviderRequest\x1aA.github.com.classydevv.fulfillment.providers.SaveProviderResponse\"\x00\x12\x98\x01\n" +
+	"\rListProviders\x12A.github.com.classydevv.fulfillment.providers.ListProvidersRequest\x1aB.github.com.classydevv.fulfillment.providers.ListProvidersResponse\"\x00B5Z3github.com/classydevv/fulfillment/pkg/api/providersb\x06proto3"
 
 var file_api_providers_service_proto_goTypes = []any{
-	(*SaveProviderRequest)(nil),   // 0: github.com.classydevv.metro_fulfillment.providers.SaveProviderRequest
-	(*ListProvidersRequest)(nil),  // 1: github.com.classydevv.metro_fulfillment.providers.ListProvidersRequest
-	(*SaveProviderResponse)(nil),  // 2: github.com.classydevv.metro_fulfillment.providers.SaveProviderResponse
-	(*ListProvidersResponse)(nil), // 3: github.com.classydevv.metro_fulfillment.providers.ListProvidersResponse
+	(*SaveProviderRequest)(nil),   // 0: github.com.classydevv.fulfillment.providers.SaveProviderRequest
+	(*ListProvidersRequest)(nil),  // 1: github.com.classydevv.fulfillment.providers.ListProvidersRequest
+	(*SaveProviderResponse)(nil),  // 2: github.com.classydevv.fulfillment.providers.SaveProviderResponse
+	(*ListProvidersResponse)(nil), // 3: github.com.classydevv.fulfillment.providers.ListProvidersResponse
 }
 var file_api_providers_service_proto_depIdxs = []int32{
-	0, // 0: github.com.classydevv.metro_fulfillment.providers.ProvidersService.SaveProvider:input_type -> github.com.classydevv.metro_fulfillment.providers.SaveProviderRequest
-	1, // 1: github.com.classydevv.metro_fulfillment.providers.ProvidersService.ListProviders:input_type -> github.com.classydevv.metro_fulfillment.providers.ListProvidersRequest
-	2, // 2: github.com.classydevv.metro_fulfillment.providers.ProvidersService.SaveProvider:output_type -> github.com.classydevv.metro_fulfillment.providers.SaveProviderResponse
-	3, // 3: github.com.classydevv.metro_fulfillment.providers.ProvidersService.ListProviders:output_type -> github.com.classydevv.metro_fulfillment.providers.ListProvidersResponse
+	0, // 0: github.com.classydevv.fulfillment.providers.ProvidersService.SaveProvider:input_type -> github.com.classydevv.fulfillment.providers.SaveProviderRequest
+	1, // 1: github.com.classydevv.fulfillment.providers.ProvidersService.ListProviders:input_type -> github.com.classydevv.fulfillment.providers.ListProvidersRequest
+	2, // 2: github.com.classydevv.fulfillment.providers.ProvidersService.SaveProvider:output_type -> github.com.classydevv.fulfillment.providers.SaveProviderResponse
+	3, // 3: github.com.classydevv.fulfillment.providers.ProvidersService.ListProviders:output_type -> github.com.classydevv.fulfillment.providers.ListProvidersResponse
 	2, // [2:4] is the sub-list for method output_type
 	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name

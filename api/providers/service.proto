@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package github.com.classydevv.metro_fulfillment.providers;
+package github.com.classydevv.fulfillment.providers;
 
 import "api/providers/messages.proto";
 
-option go_package = "github.com/classydevv/metro-fulfillment/pkg/api/providers";
+option go_package = "github.com/classydevv/fulfillment/pkg/api/providers";
 
 service ProvidersService {
     rpc SaveProvider(SaveProviderRequest) returns (SaveProviderResponse) {}

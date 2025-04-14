@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package github.com.classydevv.metro_fulfillment.providers;
+package github.com.classydevv.fulfillment.providers;
 
-option go_package = "github.com/classydevv/metro-fulfillment/pkg/api/providers";
+option go_package = "github.com/classydevv/fulfillment/pkg/api/providers";
 
 // Provider - full provider model
 message Provider {
