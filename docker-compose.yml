@@ -1,22 +1,56 @@
+x-db-environment: &x-db-environment
+  POSTGRES_SSL_MODE: "disable"
+  POSTGRES_HOST: "db"
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: "providers"
+  POSTGRES_PASSWORD: "GY34G6TH@!3fghF45"
+  POSTGRES_USER: "user"
+
+x-providers-app-environment: &x-providers-app-environment
+  # HTTP
+  HTTP_PORT: "8080"
+  # GRPC
+  GRPC_PORT: "8082"
+  # Logger
+  LOG_LEVEL: "debug"
+  # PG
+  PG_URL: "postgres://user:GY34G6TH@!3fghF45@db:5432/providers"
+
+
 services:
   providers:
+    container_name: providers
     build: 
       context: .
       dockerfile: ./build/package/providers/Dockerfile
     command: /main
+    environment:
+      <<: *x-providers-app-environment
     ports:
-      - 8080:8080
-  logistics:
-    build: 
-      context: .
-      dockerfile: ./build/package/logistics/Dockerfile
-    command: /main
+      - "8080:8080"
+      - "8082:8082"
+    depends_on:
+      - db
+    networks:
+      app_network:
+
+  db:
+    container_name: db
+    image: postgres:17-alpine
+    environment:
+      <<: *x-db-environment
+    volumes:
+      - providers_data:/var/lib/postgresql/data
     ports:
-      - 8081:8081
-  order:
-    build: 
-      context: .
-      dockerfile: ./build/package/order/Dockerfile
-    command: /main
-    ports:
-      - 8082:8082
+      - "5432:5432"
+    networks:
+      app_network:
+
+
+networks:
+  app_network:
+    external: false
+
+
+volumes:
+  providers_data:

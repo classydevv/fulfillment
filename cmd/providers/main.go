@@ -4,7 +4,7 @@ import (
 	"log"
 
 	config "github.com/classydevv/fulfillment/configs/providers"
-	"github.com/classydevv/fulfillment/internal/app/providers"
+	"github.com/classydevv/fulfillment/internal/providers/app"
 )
 
 func main() {
@@ -15,5 +15,5 @@ func main() {
 	}
 
 	// Run
-	providers.Run(cfg)
+	app.Run(cfg)
 }

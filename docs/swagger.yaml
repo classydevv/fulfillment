@@ -1,0 +1,100 @@
+basePath: /v1
+definitions:
+  entity.Provider:
+    properties:
+      id:
+        example: kuper
+        type: string
+      name:
+        example: Купер
+        type: string
+    type: object
+  v1.providerCreateRequest:
+    properties:
+      id:
+        example: kuper
+        type: string
+      name:
+        example: Купер
+        type: string
+    required:
+    - id
+    - name
+    type: object
+  v1.providerCreateResponse:
+    properties:
+      id:
+        type: string
+    type: object
+  v1.providerListAllResponse:
+    properties:
+      providers:
+        items:
+          $ref: '#/definitions/entity.Provider'
+        type: array
+    type: object
+  v1.responseError:
+    properties:
+      error:
+        example: message
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: 'Service to manager all provider related data: delivery zones and slots,
+    pickup points, tariffs, etc.'
+  title: Provider API
+  version: "1.0"
+paths:
+  /providers:
+    get:
+      consumes:
+      - application/json
+      description: List all available providers registered in the system
+      operationId: providerListAll
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.providerListAllResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.responseError'
+      summary: List all providers
+      tags:
+      - provider
+    post:
+      consumes:
+      - application/json
+      description: Creates a new delivery provider
+      operationId: providerCreate
+      parameters:
+      - description: Provider parameters
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1.providerCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.providerCreateResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.responseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.responseError'
+      summary: Create a new provider
+      tags:
+      - provider
+swagger: "2.0"

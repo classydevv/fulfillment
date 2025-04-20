@@ -1,0 +1,148 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Service to manager all provider related data: delivery zones and slots, pickup points, tariffs, etc.",
+        "title": "Provider API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/v1",
+    "paths": {
+        "/providers": {
+            "get": {
+                "description": "List all available providers registered in the system",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provider"
+                ],
+                "summary": "List all providers",
+                "operationId": "providerListAll",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.providerListAllResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/v1.responseError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Creates a new delivery provider",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provider"
+                ],
+                "summary": "Create a new provider",
+                "operationId": "providerCreate",
+                "parameters": [
+                    {
+                        "description": "Provider parameters",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.providerCreateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.providerCreateResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/v1.responseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/v1.responseError"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "entity.Provider": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "kuper"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Купер"
+                }
+            }
+        },
+        "v1.providerCreateRequest": {
+            "type": "object",
+            "required": [
+                "id",
+                "name"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "kuper"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Купер"
+                }
+            }
+        },
+        "v1.providerCreateResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.providerListAllResponse": {
+            "type": "object",
+            "properties": {
+                "providers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.Provider"
+                    }
+                }
+            }
+        },
+        "v1.responseError": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "message"
+                }
+            }
+        }
+    }
+}

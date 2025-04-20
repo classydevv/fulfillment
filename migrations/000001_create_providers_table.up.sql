@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS providers(
+    id VARCHAR(40) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
