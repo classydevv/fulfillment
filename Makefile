@@ -39,6 +39,10 @@ compose-down: ### Down docker compose
 compose-reload: compose-down compose-build compose-up ### Quick reload for development use 
 .PHONY: compose-reload
 
+linter-golangci: ### Check by golangci linter
+	golangci-lint run
+.PHONY: linter-golangci
+
 swag:	
 	swag init -g internal/providers/controller/http/router.go
 .PHONY: swag
@@ -63,6 +67,7 @@ swag:
 	go install github.com/swaggo/swag/cmd/swag@latest
 	go install github.com/swaggo/swag/cmd/swag@latest
 	go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+	go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
 .PHONY: .bin-deps
 
 .tidy:

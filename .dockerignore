@@ -1,0 +1,19 @@
+.idea
+.git
+.github
+# nginx
+
+.dockerignore
+.env
+# .env.example
+.golangci.yml
+.gitignore
+
+coverage.txt
+
+docker-compose.yml
+
+LICENSE.md
+Makefile
+README*
+TODO
