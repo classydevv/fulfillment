@@ -13,8 +13,8 @@ import (
 
 type providerRoutes struct {
 	uc usecase.Provider
-	l logger.Interface
-	v *validator.Validate
+	l  logger.Interface
+	v  *validator.Validate
 }
 
 func NewProviderRoutes(apiGroup fiber.Router, uc usecase.Provider, l logger.Interface) {
@@ -27,8 +27,8 @@ func NewProviderRoutes(apiGroup fiber.Router, uc usecase.Provider, l logger.Inte
 }
 
 type providerCreateRequest struct {
-	Id entity.ProviderId `json:"id" validate:"required" example:"kuper"`
-	Name string `json:"name" validate:"required" example:"Купер"`
+	Id   entity.ProviderId `json:"id" validate:"required" example:"kuper"`
+	Name string            `json:"name" validate:"required" example:"Купер"`
 }
 
 type providerCreateResponse struct {
@@ -62,7 +62,7 @@ func (r *providerRoutes) providerCreate(ctx *fiber.Ctx) error {
 	}
 
 	providerId, err := r.uc.Create(ctx.UserContext(), entity.Provider{
-		Id: request.Id,
+		Id:   request.Id,
 		Name: request.Name,
 	})
 	if err != nil {

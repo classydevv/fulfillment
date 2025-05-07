@@ -7,6 +7,7 @@ require (
 	github.com/ansrivas/fiberprometheus/v2 v2.9.1
 	github.com/caarlos0/env/v11 v11.3.1
 	github.com/go-playground/validator/v10 v10.26.0
+	github.com/goccy/go-json v0.9.11
 	github.com/gofiber/fiber/v2 v2.52.6
 	github.com/gofiber/swagger v1.1.1
 	github.com/golang-migrate/migrate/v4 v4.18.2

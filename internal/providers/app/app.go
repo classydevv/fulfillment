@@ -26,7 +26,7 @@ func Run(cfg *config.Config) {
 	pg, err := postgres.New(
 		cfg.PG.URL,
 		l,
-		postgres.MaxPoolSize(int32(cfg.PG.MaxPoolSize)))
+		postgres.MaxPoolSize(cfg.PG.MaxPoolSize))
 	if err != nil {
 		l.Fatal(fmt.Errorf("app - Run - postgres.New: %w", err))
 	}
@@ -41,19 +41,19 @@ func Run(cfg *config.Config) {
 	// HTTP Server
 	httpServer := httpserver.New(
 		httpserver.Port(cfg.HTTP.Port),
-		httpserver.ReadTimeout(time.Duration(cfg.HTTP.ReadTimeoutSeconds) * time.Second),
-		httpserver.WriteTimeout(time.Duration(cfg.HTTP.WriteTimeoutSeconds) * time.Second),
-		httpserver.ServerShutdownTimeout(time.Duration(cfg.HTTP.ServerShutdownTimeout) * time.Second),
+		httpserver.ReadTimeout(time.Duration(cfg.HTTP.ReadTimeoutSeconds)*time.Second),
+		httpserver.WriteTimeout(time.Duration(cfg.HTTP.WriteTimeoutSeconds)*time.Second),
+		httpserver.ServerShutdownTimeout(time.Duration(cfg.HTTP.ServerShutdownTimeout)*time.Second),
 	)
 	httpcontroller.NewRouterProvider(httpServer.App, cfg, l, providerUseCase)
-	
+
 	// GRPC Server
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
 	grpcServer, err := grpcserver.New(ctx, cfg)
 	if err != nil {
-		l.Fatal(fmt.Errorf("providers - Run - grpcserver.New: %s", err))
+		l.Fatal(fmt.Errorf("providers - Run - grpcserver.New: %w", err))
 	}
 
 	// Start servers

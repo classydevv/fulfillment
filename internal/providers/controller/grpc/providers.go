@@ -14,7 +14,7 @@ import (
 
 type Server struct {
 	grpc.Server
-	
+
 	pb.UnimplementedProvidersServiceServer
 
 	mu        sync.RWMutex
@@ -47,13 +47,13 @@ func validateSaveProviderRequest(req *pb.SaveProviderRequest) error {
 	id := req.GetId()
 	name := req.GetName()
 	var violations []*errdetails.BadRequest_FieldViolation
-	if len(id) == 0 {
+	if id == "" {
 		violations = append(violations, &errdetails.BadRequest_FieldViolation{
 			Field:       "id",
 			Description: "empty",
 		})
 	}
-	if len(name) == 0 {
+	if name == "" {
 		violations = append(violations, &errdetails.BadRequest_FieldViolation{
 			Field:       "name",
 			Description: "empty",
@@ -72,7 +72,7 @@ func validateSaveProviderRequest(req *pb.SaveProviderRequest) error {
 	return nil
 }
 
-func (s *Server) ListProviders(_ context.Context, req *pb.ListProvidersRequest) (*pb.ListProvidersResponse, error) {
+func (s *Server) ListProviders(_ context.Context, _ *pb.ListProvidersRequest) (*pb.ListProvidersResponse, error) {
 	log.Printf("ListProviders: received")
 
 	s.mu.RLock()

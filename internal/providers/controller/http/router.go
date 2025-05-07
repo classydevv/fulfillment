@@ -5,7 +5,7 @@ import (
 
 	"github.com/ansrivas/fiberprometheus/v2"
 	config "github.com/classydevv/fulfillment/configs/providers"
-	_ "github.com/classydevv/fulfillment/docs"
+	_ "github.com/classydevv/fulfillment/docs" // used by swag tool
 	"github.com/classydevv/fulfillment/internal/providers/controller/http/middleware"
 	"github.com/classydevv/fulfillment/internal/providers/controller/http/routes/v1"
 	"github.com/classydevv/fulfillment/internal/providers/usecase"
@@ -48,4 +48,3 @@ func NewRouterProvider(app *fiber.App, cfg *config.Config, l logger.Interface, u
 		v1.NewProviderRoutes(apiV1Group, uc, l)
 	}
 }
-

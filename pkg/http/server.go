@@ -1,27 +1,26 @@
 package http
 
 import (
-	"encoding/json"
 	"time"
 
+	"github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"
-	// "github.com/goccy/go-json"
 )
 
 type Server struct {
-	App *fiber.App
+	App    *fiber.App
 	notify chan error
 
-	address string
-	prefork bool
-	httpReadTimeout     time.Duration
-	httpWriteTimeout    time.Duration
+	address               string
+	prefork               bool
+	httpReadTimeout       time.Duration
+	httpWriteTimeout      time.Duration
 	serverShutdownTimeout time.Duration
 }
 
 func New(opts ...Option) *Server {
 	s := &Server{
-		App: nil,
+		App:    nil,
 		notify: make(chan error, 1),
 	}
 
@@ -30,8 +29,8 @@ func New(opts ...Option) *Server {
 	}
 
 	app := fiber.New(fiber.Config{
-		Prefork: s.prefork,
-		ReadTimeout: s.httpReadTimeout,
+		Prefork:      s.prefork,
+		ReadTimeout:  s.httpReadTimeout,
 		WriteTimeout: s.httpWriteTimeout,
 		JSONDecoder:  json.Unmarshal,
 		JSONEncoder:  json.Marshal,

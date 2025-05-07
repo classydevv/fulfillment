@@ -20,7 +20,6 @@ func NewPostgresRepo(pg *postgres.Postgres) *PostgresRepo {
 }
 
 func (pg *PostgresRepo) Store(ctx context.Context, provider entity.Provider) error {
-	// TODO handle duplicate inserts
 	query, args, err := pg.Builder.
 		Insert("providers").
 		Columns("id, name").
@@ -36,7 +35,7 @@ func (pg *PostgresRepo) Store(ctx context.Context, provider entity.Provider) err
 	if err != nil {
 		var pgError *pgconn.PgError
 		if errors.As(err, &pgError) && pgError.Code == pgerrcode.UniqueViolation {
-			return fmt.Errorf("PostgresRepo - Store - pg.Pool.Exec: %s: %w", entity.ErrAlreadyExists, err)
+			return fmt.Errorf("PostgresRepo - Store - pg.Pool.Exec: %w", entity.ErrAlreadyExists)
 		}
 		return fmt.Errorf("PostgresRepo - Store - pg.Pool.Exec: %w", err)
 	}

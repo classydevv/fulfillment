@@ -8,10 +8,10 @@ import (
 
 type (
 	Config struct {
-		GRPC GRPC
-		HTTP HTTP
-		PG PG
-		Log Log
+		GRPC    GRPC
+		HTTP    HTTP
+		PG      PG
+		Log     Log
 		Metrics Metrics
 		Swagger Swagger
 	}
@@ -22,16 +22,16 @@ type (
 
 	HTTP struct {
 		// Host string `env:"HTTP_HOST,required"`
-		Port string `env:"HTTP_PORT,required"`
-		Prefork bool `env:"HTTP_PREFORK"`
-		ReadTimeoutSeconds int `env:"HTTP_READ_TIMEOUT_SECONDS" envDefault:"5"`
-		WriteTimeoutSeconds int `env:"HTTP_WRITE_TIMEOUT_SECONDS" envDefault:"5"`
-		ServerShutdownTimeout int `env:"HTTP_SERVER_SHUTDOWN_TIMEOUT" envDefault:"3"`
+		Port                  string `env:"HTTP_PORT,required"`
+		Prefork               bool   `env:"HTTP_PREFORK"`
+		ReadTimeoutSeconds    int    `env:"HTTP_READ_TIMEOUT_SECONDS" envDefault:"5"`
+		WriteTimeoutSeconds   int    `env:"HTTP_WRITE_TIMEOUT_SECONDS" envDefault:"5"`
+		ServerShutdownTimeout int    `env:"HTTP_SERVER_SHUTDOWN_TIMEOUT" envDefault:"3"`
 	}
 
 	PG struct {
-		URL string `env:"PG_URL,required"`
-		MaxPoolSize int `env:"PG_MAX_POOL_SIZE"`
+		URL         string `env:"PG_URL,required"`
+		MaxPoolSize int32  `env:"PG_MAX_POOL_SIZE"`
 	}
 
 	Log struct {
@@ -45,7 +45,6 @@ type (
 	Swagger struct {
 		Enabled bool `env:"SWAGGER_ENABLED" envDefault:"true"`
 	}
-
 )
 
 func NewConfig() (*Config, error) {

@@ -11,14 +11,14 @@ import (
 )
 
 const (
-	_defaultConnAttempts = 10
-	_defaultConnRetryTimeout  = time.Second
+	_defaultConnAttempts     = 10
+	_defaultConnRetryTimeout = time.Second
 )
 
 type Postgres struct {
-	maxPoolSize  int32
-	connAttempts int
-	connRetryTimeout  time.Duration
+	maxPoolSize      int32
+	connAttempts     int
+	connRetryTimeout time.Duration
 
 	Pool    *pgxpool.Pool
 	Builder squirrel.StatementBuilderType
@@ -26,7 +26,7 @@ type Postgres struct {
 
 func New(url string, l logger.Interface, opts ...Option) (*Postgres, error) {
 	pg := &Postgres{
-		connAttempts: _defaultConnAttempts,
+		connAttempts:     _defaultConnAttempts,
 		connRetryTimeout: _defaultConnRetryTimeout,
 	}
 
@@ -36,7 +36,7 @@ func New(url string, l logger.Interface, opts ...Option) (*Postgres, error) {
 	}
 
 	pg.Builder = squirrel.StatementBuilder.PlaceholderFormat(squirrel.Dollar)
-	
+
 	poolConfig, err := pgxpool.ParseConfig(url)
 	if err != nil {
 		return nil, fmt.Errorf("postgres - New - pgxpool.ParseConfig: %w", err)

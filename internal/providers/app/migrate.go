@@ -13,7 +13,6 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
-
 const (
 	_defaultAttempts = 20
 	_defaultTimeout  = time.Second
