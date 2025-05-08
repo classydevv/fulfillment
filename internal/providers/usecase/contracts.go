@@ -12,5 +12,7 @@ type (
 	Provider interface {
 		Create(context.Context, entity.Provider) (entity.ProviderId, error)
 		ListAll(context.Context) ([]entity.Provider, error)
+		Update(context.Context, entity.ProviderId, entity.Provider) (*entity.Provider, error)
+		Delete(context.Context, entity.ProviderId) error
 	}
 )

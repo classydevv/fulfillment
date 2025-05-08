@@ -27,7 +27,10 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1.providerListAllResponse"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/v1.providerEntityResponse"
+                            }
                         }
                     },
                     "500": {
@@ -53,8 +56,8 @@
                 "operationId": "providerCreate",
                 "parameters": [
                     {
-                        "description": "Provider parameters",
-                        "name": "request",
+                        "description": "Provider create parameters",
+                        "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -63,14 +66,126 @@
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/v1.providerCreateResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/v1.responseError"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/v1.responseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/v1.responseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/providers/{providerId}": {
+            "put": {
+                "description": "Updates a delivery provider",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provider"
+                ],
+                "summary": "Update a provider",
+                "operationId": "providerUpdate",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Provider ID",
+                        "name": "providerId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Provider update parameters",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.providerUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.providerUpdateResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/v1.responseError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/v1.responseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/v1.responseError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Deletes a delivery provider",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provider"
+                ],
+                "summary": "Delete a provider",
+                "operationId": "providerDelete",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Provider ID",
+                        "name": "providerId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/v1.responseError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/v1.responseError"
                         }
@@ -86,52 +201,80 @@
         }
     },
     "definitions": {
-        "entity.Provider": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string",
-                    "example": "kuper"
-                },
-                "name": {
-                    "type": "string",
-                    "example": "Купер"
-                }
-            }
-        },
         "v1.providerCreateRequest": {
             "type": "object",
             "required": [
-                "id",
-                "name"
+                "name",
+                "provider_id"
             ],
             "properties": {
-                "id": {
-                    "type": "string",
-                    "example": "kuper"
-                },
                 "name": {
                     "type": "string",
                     "example": "Купер"
+                },
+                "provider_id": {
+                    "type": "string",
+                    "example": "kuper"
                 }
             }
         },
         "v1.providerCreateResponse": {
             "type": "object",
             "properties": {
-                "id": {
-                    "type": "string"
+                "provider_id": {
+                    "type": "string",
+                    "example": "kuper"
                 }
             }
         },
-        "v1.providerListAllResponse": {
+        "v1.providerEntityResponse": {
             "type": "object",
             "properties": {
-                "providers": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/entity.Provider"
-                    }
+                "created_at": {
+                    "type": "string",
+                    "example": "2025-05-08T06:07:14.810915Z"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Купер"
+                },
+                "provider_id": {
+                    "type": "string",
+                    "example": "kuper"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "example": "2025-05-08T06:07:14.810915Z"
+                }
+            }
+        },
+        "v1.providerUpdateRequest": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "Купер"
+                }
+            }
+        },
+        "v1.providerUpdateResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string",
+                    "example": "2025-05-08T06:07:14.810915Z"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Купер"
+                },
+                "provider_id": {
+                    "type": "string",
+                    "example": "kuper"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "example": "2025-05-08T06:07:14.810915Z"
                 }
             }
         },

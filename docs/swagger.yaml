@@ -1,37 +1,58 @@
 basePath: /v1
 definitions:
-  entity.Provider:
-    properties:
-      id:
-        example: kuper
-        type: string
-      name:
-        example: Купер
-        type: string
-    type: object
   v1.providerCreateRequest:
     properties:
-      id:
-        example: kuper
-        type: string
       name:
         example: Купер
         type: string
+      provider_id:
+        example: kuper
+        type: string
     required:
-    - id
     - name
+    - provider_id
     type: object
   v1.providerCreateResponse:
     properties:
-      id:
+      provider_id:
+        example: kuper
         type: string
     type: object
-  v1.providerListAllResponse:
+  v1.providerEntityResponse:
     properties:
-      providers:
-        items:
-          $ref: '#/definitions/entity.Provider'
-        type: array
+      created_at:
+        example: "2025-05-08T06:07:14.810915Z"
+        type: string
+      name:
+        example: Купер
+        type: string
+      provider_id:
+        example: kuper
+        type: string
+      updated_at:
+        example: "2025-05-08T06:07:14.810915Z"
+        type: string
+    type: object
+  v1.providerUpdateRequest:
+    properties:
+      name:
+        example: Купер
+        type: string
+    type: object
+  v1.providerUpdateResponse:
+    properties:
+      created_at:
+        example: "2025-05-08T06:07:14.810915Z"
+        type: string
+      name:
+        example: Купер
+        type: string
+      provider_id:
+        example: kuper
+        type: string
+      updated_at:
+        example: "2025-05-08T06:07:14.810915Z"
+        type: string
     type: object
   v1.responseError:
     properties:
@@ -59,7 +80,9 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/v1.providerListAllResponse'
+            items:
+              $ref: '#/definitions/v1.providerEntityResponse'
+            type: array
         "500":
           description: Internal Server Error
           schema:
@@ -73,21 +96,25 @@ paths:
       description: Creates a new delivery provider
       operationId: providerCreate
       parameters:
-      - description: Provider parameters
+      - description: Provider create parameters
         in: body
-        name: request
+        name: body
         required: true
         schema:
           $ref: '#/definitions/v1.providerCreateRequest'
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           schema:
             $ref: '#/definitions/v1.providerCreateResponse'
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.responseError'
+        "409":
+          description: Conflict
           schema:
             $ref: '#/definitions/v1.responseError'
         "500":
@@ -95,6 +122,77 @@ paths:
           schema:
             $ref: '#/definitions/v1.responseError'
       summary: Create a new provider
+      tags:
+      - provider
+  /providers/{providerId}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a delivery provider
+      operationId: providerDelete
+      parameters:
+      - description: Provider ID
+        in: path
+        name: providerId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.responseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.responseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.responseError'
+      summary: Delete a provider
+      tags:
+      - provider
+    put:
+      consumes:
+      - application/json
+      description: Updates a delivery provider
+      operationId: providerUpdate
+      parameters:
+      - description: Provider ID
+        in: path
+        name: providerId
+        required: true
+        type: string
+      - description: Provider update parameters
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/v1.providerUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.providerUpdateResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.responseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.responseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.responseError'
+      summary: Update a provider
       tags:
       - provider
 swagger: "2.0"

@@ -23,8 +23,7 @@ func (uc *UseCaseProviders) Create(ctx context.Context, provider entity.Provider
 	if err != nil {
 		return "", fmt.Errorf("UseCaseProviders - Save - uc.repo.Store: %w", err)
 	}
-
-	return provider.Id, nil
+	return provider.ProviderId, nil
 }
 
 func (uc *UseCaseProviders) ListAll(ctx context.Context) ([]entity.Provider, error) {
@@ -34,4 +33,22 @@ func (uc *UseCaseProviders) ListAll(ctx context.Context) ([]entity.Provider, err
 	}
 
 	return providers, nil
+}
+
+func (uc *UseCaseProviders) Update(ctx context.Context, providerId entity.ProviderId, provider entity.Provider) (*entity.Provider, error) {
+	providerUpdated, err := uc.repo.Update(ctx, providerId, provider)
+	if err != nil {
+		return nil, fmt.Errorf("UseCaseProviders - Update - uc.repo.Update: %w", err)
+	}
+
+	return providerUpdated, nil
+}
+
+func (uc *UseCaseProviders) Delete(ctx context.Context, providerId entity.ProviderId) error {
+	err := uc.repo.Delete(ctx, providerId)
+	if err != nil {
+		return fmt.Errorf("UseCaseProviders - Delete - uc.repo.Delete: %w", err)
+	}
+
+	return nil
 }

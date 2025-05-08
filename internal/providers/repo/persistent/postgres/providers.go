@@ -8,6 +8,7 @@ import (
 	"github.com/classydevv/fulfillment/internal/providers/entity"
 	"github.com/classydevv/fulfillment/pkg/postgres"
 	"github.com/jackc/pgerrcode"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
@@ -19,11 +20,11 @@ func NewPostgresRepo(pg *postgres.Postgres) *PostgresRepo {
 	return &PostgresRepo{pg}
 }
 
-func (pg *PostgresRepo) Store(ctx context.Context, provider entity.Provider) error {
+func (pg *PostgresRepo) Store(ctx context.Context, p entity.Provider) error {
 	query, args, err := pg.Builder.
 		Insert("providers").
-		Columns("id, name").
-		Values(provider.Id, provider.Name).
+		Columns("provider_id, name").
+		Values(p.ProviderId, p.Name).
 		ToSql()
 
 	if err != nil {
@@ -45,7 +46,7 @@ func (pg *PostgresRepo) Store(ctx context.Context, provider entity.Provider) err
 
 func (pg *PostgresRepo) GetAll(ctx context.Context) ([]entity.Provider, error) {
 	query, _, err := pg.Builder.
-		Select("id, name").
+		Select("*").
 		From("providers").
 		ToSql()
 	if err != nil {
@@ -56,22 +57,62 @@ func (pg *PostgresRepo) GetAll(ctx context.Context) ([]entity.Provider, error) {
 	if err != nil {
 		return nil, fmt.Errorf("PostgresRepo - GetAll - pg.Pool.Query: %w", err)
 	}
-	defer rows.Close()
 
-	providers := make([]entity.Provider, 0)
+	providers, err := pgx.CollectRows(rows, pgx.RowToStructByName[entity.Provider])
 
-	for rows.Next() {
-		provider := entity.Provider{}
-		err := rows.Scan(&provider.Id, &provider.Name)
-		if err != nil {
-			return nil, fmt.Errorf("PostgresRepo - GetAll - rows.Scan: %w", err)
-		}
-		providers = append(providers, provider)
-	}
-	err = rows.Err()
 	if err != nil {
-		return nil, fmt.Errorf("PostgresRepo - GetAll - rows.Err: %w", err)
+		return nil, fmt.Errorf("PostgresRepo - GetAll - pgx.CollectRows: %w", err)
 	}
 
 	return providers, nil
+}
+
+func (pg *PostgresRepo) Update(ctx context.Context, id entity.ProviderId, p entity.Provider) (*entity.Provider, error) {
+	query, args, err := pg.Builder.
+		Update("providers").
+		Set(
+			"name", p.Name,
+			).
+		Where("provider_id = ?", id).
+		Suffix("RETURNING *").
+		ToSql()
+	if err != nil {
+		return nil, fmt.Errorf("PostgresRepo - Update - pg.Builder: %w", err)
+	}
+
+	rows, err := pg.Pool.Query(ctx, query, args...)
+	if err != nil {
+		return nil, fmt.Errorf("PostgresRepo - Update - pg.Pool.Query: %w", err)
+	}
+	provider, err := pgx.CollectOneRow(rows, pgx.RowToAddrOfStructByName[entity.Provider])
+
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, fmt.Errorf("PostgresRepo - Update - pgx.CollectOneRow: %w", entity.ErrNotFound)
+		}
+		return nil, fmt.Errorf("PostgresRepo - Update - pgx.CollectOneRow: %w", err)
+	}
+
+	return provider, nil
+}
+
+func (pg *PostgresRepo) Delete(ctx context.Context, id entity.ProviderId) error {
+	query, args, err := pg.Builder.
+		Delete("providers").
+		Where("provider_id = ?", id).
+		ToSql()
+	if err != nil {
+		return fmt.Errorf("PostgresRepo - Delete - pg.Builder: %w", err)
+	}
+
+	comm, err := pg.Pool.Exec(ctx, query, args...)
+	if err != nil {
+		return fmt.Errorf("PostgresRepo - Delete - pg.Pool.Exec: %w", err)
+	}
+
+	if comm.RowsAffected() != 1 {
+		return fmt.Errorf("PostgresRepo - Delete - pg.Pool.Exec: %w", entity.ErrNotFound)
+	}
+
+	return nil
 }
