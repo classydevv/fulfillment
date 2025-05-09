@@ -25,7 +25,7 @@ const (
 type Provider struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// id - идентификатор провайдера
-	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"` // TODO id should be of type ProviderId
 	// name - название провайдера
 	Name          string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -76,7 +76,7 @@ func (x *Provider) GetName() string {
 	return ""
 }
 
-type SaveProviderRequest struct {
+type CreateProviderRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// id - идентификатор провайдера
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -86,20 +86,20 @@ type SaveProviderRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SaveProviderRequest) Reset() {
-	*x = SaveProviderRequest{}
+func (x *CreateProviderRequest) Reset() {
+	*x = CreateProviderRequest{}
 	mi := &file_api_providers_messages_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SaveProviderRequest) String() string {
+func (x *CreateProviderRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SaveProviderRequest) ProtoMessage() {}
+func (*CreateProviderRequest) ProtoMessage() {}
 
-func (x *SaveProviderRequest) ProtoReflect() protoreflect.Message {
+func (x *CreateProviderRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_api_providers_messages_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -111,26 +111,26 @@ func (x *SaveProviderRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SaveProviderRequest.ProtoReflect.Descriptor instead.
-func (*SaveProviderRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateProviderRequest.ProtoReflect.Descriptor instead.
+func (*CreateProviderRequest) Descriptor() ([]byte, []int) {
 	return file_api_providers_messages_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *SaveProviderRequest) GetId() string {
+func (x *CreateProviderRequest) GetId() string {
 	if x != nil {
 		return x.Id
 	}
 	return ""
 }
 
-func (x *SaveProviderRequest) GetName() string {
+func (x *CreateProviderRequest) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-type SaveProviderResponse struct {
+type CreateProviderResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// id - идентификатор провайдера
 	Id            string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -138,20 +138,20 @@ type SaveProviderResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SaveProviderResponse) Reset() {
-	*x = SaveProviderResponse{}
+func (x *CreateProviderResponse) Reset() {
+	*x = CreateProviderResponse{}
 	mi := &file_api_providers_messages_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SaveProviderResponse) String() string {
+func (x *CreateProviderResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SaveProviderResponse) ProtoMessage() {}
+func (*CreateProviderResponse) ProtoMessage() {}
 
-func (x *SaveProviderResponse) ProtoReflect() protoreflect.Message {
+func (x *CreateProviderResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_api_providers_messages_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -163,38 +163,38 @@ func (x *SaveProviderResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SaveProviderResponse.ProtoReflect.Descriptor instead.
-func (*SaveProviderResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateProviderResponse.ProtoReflect.Descriptor instead.
+func (*CreateProviderResponse) Descriptor() ([]byte, []int) {
 	return file_api_providers_messages_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *SaveProviderResponse) GetId() string {
+func (x *CreateProviderResponse) GetId() string {
 	if x != nil {
 		return x.Id
 	}
 	return ""
 }
 
-type ListProvidersRequest struct {
+type ListAllProvidersRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListProvidersRequest) Reset() {
-	*x = ListProvidersRequest{}
+func (x *ListAllProvidersRequest) Reset() {
+	*x = ListAllProvidersRequest{}
 	mi := &file_api_providers_messages_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListProvidersRequest) String() string {
+func (x *ListAllProvidersRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListProvidersRequest) ProtoMessage() {}
+func (*ListAllProvidersRequest) ProtoMessage() {}
 
-func (x *ListProvidersRequest) ProtoReflect() protoreflect.Message {
+func (x *ListAllProvidersRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_api_providers_messages_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -206,32 +206,32 @@ func (x *ListProvidersRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListProvidersRequest.ProtoReflect.Descriptor instead.
-func (*ListProvidersRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListAllProvidersRequest.ProtoReflect.Descriptor instead.
+func (*ListAllProvidersRequest) Descriptor() ([]byte, []int) {
 	return file_api_providers_messages_proto_rawDescGZIP(), []int{3}
 }
 
-type ListProvidersResponse struct {
+type ListAllProvidersResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Providers     []*Provider            `protobuf:"bytes,1,rep,name=providers,proto3" json:"providers,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListProvidersResponse) Reset() {
-	*x = ListProvidersResponse{}
+func (x *ListAllProvidersResponse) Reset() {
+	*x = ListAllProvidersResponse{}
 	mi := &file_api_providers_messages_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListProvidersResponse) String() string {
+func (x *ListAllProvidersResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListProvidersResponse) ProtoMessage() {}
+func (*ListAllProvidersResponse) ProtoMessage() {}
 
-func (x *ListProvidersResponse) ProtoReflect() protoreflect.Message {
+func (x *ListAllProvidersResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_api_providers_messages_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -243,12 +243,12 @@ func (x *ListProvidersResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListProvidersResponse.ProtoReflect.Descriptor instead.
-func (*ListProvidersResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListAllProvidersResponse.ProtoReflect.Descriptor instead.
+func (*ListAllProvidersResponse) Descriptor() ([]byte, []int) {
 	return file_api_providers_messages_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *ListProvidersResponse) GetProviders() []*Provider {
+func (x *ListAllProvidersResponse) GetProviders() []*Provider {
 	if x != nil {
 		return x.Providers
 	}
@@ -262,14 +262,14 @@ const file_api_providers_messages_proto_rawDesc = "" +
 	"\x1capi/providers/messages.proto\x12+github.com.classydevv.fulfillment.providers\".\n" +
 	"\bProvider\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"9\n" +
-	"\x13SaveProviderRequest\x12\x0e\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\";\n" +
+	"\x15CreateProviderRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"&\n" +
-	"\x14SaveProviderResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"\x16\n" +
-	"\x14ListProvidersRequest\"l\n" +
-	"\x15ListProvidersResponse\x12S\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\"(\n" +
+	"\x16CreateProviderResponse\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"\x19\n" +
+	"\x17ListAllProvidersRequest\"o\n" +
+	"\x18ListAllProvidersResponse\x12S\n" +
 	"\tproviders\x18\x01 \x03(\v25.github.com.classydevv.fulfillment.providers.ProviderR\tprovidersB5Z3github.com/classydevv/fulfillment/pkg/api/providersb\x06proto3"
 
 var (
@@ -286,14 +286,14 @@ func file_api_providers_messages_proto_rawDescGZIP() []byte {
 
 var file_api_providers_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_api_providers_messages_proto_goTypes = []any{
-	(*Provider)(nil),              // 0: github.com.classydevv.fulfillment.providers.Provider
-	(*SaveProviderRequest)(nil),   // 1: github.com.classydevv.fulfillment.providers.SaveProviderRequest
-	(*SaveProviderResponse)(nil),  // 2: github.com.classydevv.fulfillment.providers.SaveProviderResponse
-	(*ListProvidersRequest)(nil),  // 3: github.com.classydevv.fulfillment.providers.ListProvidersRequest
-	(*ListProvidersResponse)(nil), // 4: github.com.classydevv.fulfillment.providers.ListProvidersResponse
+	(*Provider)(nil),                 // 0: github.com.classydevv.fulfillment.providers.Provider
+	(*CreateProviderRequest)(nil),    // 1: github.com.classydevv.fulfillment.providers.CreateProviderRequest
+	(*CreateProviderResponse)(nil),   // 2: github.com.classydevv.fulfillment.providers.CreateProviderResponse
+	(*ListAllProvidersRequest)(nil),  // 3: github.com.classydevv.fulfillment.providers.ListAllProvidersRequest
+	(*ListAllProvidersResponse)(nil), // 4: github.com.classydevv.fulfillment.providers.ListAllProvidersResponse
 }
 var file_api_providers_messages_proto_depIdxs = []int32{
-	0, // 0: github.com.classydevv.fulfillment.providers.ListProvidersResponse.providers:type_name -> github.com.classydevv.fulfillment.providers.Provider
+	0, // 0: github.com.classydevv.fulfillment.providers.ListAllProvidersResponse.providers:type_name -> github.com.classydevv.fulfillment.providers.Provider
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

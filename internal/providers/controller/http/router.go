@@ -20,7 +20,7 @@ import (
 // @version     1.0
 // @host        localhost:8080
 // @BasePath    /v1
-func NewRouterProvider(app *fiber.App, cfg *config.Config, l logger.Interface, uc usecase.Provider) {
+func NewRouterProvider(app *fiber.App, uc usecase.Provider, cfg *config.Config, l logger.Interface) {
 	// Options
 	app.Use(middleware.Logger(l))
 	app.Use(middleware.Recovery(l))
@@ -42,9 +42,9 @@ func NewRouterProvider(app *fiber.App, cfg *config.Config, l logger.Interface, u
 		return ctx.SendStatus(http.StatusOK)
 	})
 
-	// Routers
+	// Routes
 	apiV1Group := app.Group("/v1")
 	{
-		v1.NewProviderRoutes(apiV1Group, uc, l)
+		v1.NewRoutesProvider(apiV1Group, uc, l)
 	}
 }

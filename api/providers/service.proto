@@ -7,6 +7,6 @@ import "api/providers/messages.proto";
 option go_package = "github.com/classydevv/fulfillment/pkg/api/providers";
 
 service ProvidersService {
-    rpc SaveProvider(SaveProviderRequest) returns (SaveProviderResponse) {}
-    rpc ListProviders(ListProvidersRequest) returns (ListProvidersResponse) {}
+    rpc CreateProvider(CreateProviderRequest) returns (CreateProviderResponse) {}
+    rpc ListAllProviders(ListAllProvidersRequest) returns (ListAllProvidersResponse) {}
 }

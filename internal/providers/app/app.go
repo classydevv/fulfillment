@@ -1,7 +1,6 @@
 package app
 
 import (
-	"context"
 	"fmt"
 	"os"
 	"os/signal"
@@ -9,11 +8,12 @@ import (
 	"time"
 
 	config "github.com/classydevv/fulfillment/configs/providers"
-	httpcontroller "github.com/classydevv/fulfillment/internal/providers/controller/http"
+	"github.com/classydevv/fulfillment/internal/providers/controller/http"
+	"github.com/classydevv/fulfillment/internal/providers/controller/grpc"
 	repo "github.com/classydevv/fulfillment/internal/providers/repo/persistent/postgres"
 	"github.com/classydevv/fulfillment/internal/providers/usecase"
-	grpcserver "github.com/classydevv/fulfillment/pkg/grpc"
-	httpserver "github.com/classydevv/fulfillment/pkg/http"
+	"github.com/classydevv/fulfillment/pkg/grpcserver"
+	"github.com/classydevv/fulfillment/pkg/httpserver"
 	"github.com/classydevv/fulfillment/pkg/logger"
 	"github.com/classydevv/fulfillment/pkg/postgres"
 )
@@ -45,23 +45,15 @@ func Run(cfg *config.Config) {
 		httpserver.WriteTimeout(time.Duration(cfg.HTTP.WriteTimeoutSeconds)*time.Second),
 		httpserver.ServerShutdownTimeout(time.Duration(cfg.HTTP.ServerShutdownTimeout)*time.Second),
 	)
-	httpcontroller.NewRouterProvider(httpServer.App, cfg, l, providerUseCase)
+	http.NewRouterProvider(httpServer.App, providerUseCase, cfg, l)
 
 	// GRPC Server
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
-	grpcServer, err := grpcserver.New(ctx, cfg)
-	if err != nil {
-		l.Fatal(fmt.Errorf("providers - Run - grpcserver.New: %w", err))
-	}
+	grpcServer := grpcserver.New(grpcserver.Port(cfg.GRPC.Port))
+	grpc.NewRouterProvider(grpcServer.App, providerUseCase, l)
 
 	// Start servers
 	httpServer.Run()
-	// redo with channel!!
-	if err = grpcServer.Run(ctx); err != nil {
-		l.Fatal(fmt.Errorf("providers - Run - grpcserver.Run: %w", err))
-	}
+	grpcServer.Run()
 
 	// Wait for errors
 	interrupt := make(chan os.Signal, 1)
@@ -72,11 +64,17 @@ func Run(cfg *config.Config) {
 		l.Info("providers - Run - signal: %s", s.String())
 	case err = <-httpServer.Notify():
 		l.Error(fmt.Errorf("providers - Run - httpServer.Notify: %w", err))
+	case err = <-grpcServer.Notify():
+		l.Error(fmt.Errorf("providers - Run - grpcServer.Notify: %w", err))
 	}
 
-	// Gracefull Shutdown
+	// Graceful Shutdown
 	err = httpServer.Shutdown()
 	if err != nil {
 		l.Error(fmt.Errorf("providers - Run - httpServer.Shutdown: %w", err))
+	}
+	err = grpcServer.Shutdown()
+	if err != nil {
+		l.Error(fmt.Errorf("providers - Run - grpcServer.Shutdown: %w", err))
 	}
 }

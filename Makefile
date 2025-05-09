@@ -82,17 +82,20 @@ migrate-down: ### migration down
 	migrate -path migrations -database '$(PG_URL)?sslmode=disable' down
 .PHONY: migrate-down
 
-generate: .protoc-deps .protoc-generate .tidy
+proto-generate: .protoc-deps .protoc-generate .tidy
 .PHONY: generate
 
 run: .bin-deps .tidy
 	CGO_ENABLED=0 go run -tags migrate ./cmd/providers
 .PHONY: run
 
+pre-commit: swag proto-generate mock format linter-golangci test ### run pre-commit
+.PHONY: pre-commit
+
 # тестовые запросы с помощью grpcurl
-grpc-provider-save:
+grpc-provider-create:
 	grpcurl -plaintext -d '{"id": "kuper", "name": "Купер"}' \
-	localhost:8082 github.com.classydevv.fulfillment.providers.ProvidersService.SaveProvider
+	localhost:8082 github.com.classydevv.fulfillment.providers.ProvidersService.CreateProvider
 grpc-provider-list-all:
 	grpcurl -plaintext -d '' \
-	localhost:8082 github.com.classydevv.fulfillment.providers.ProvidersService.ListProviders
+	localhost:8082 github.com.classydevv.fulfillment.providers.ProvidersService.ListAllProviders

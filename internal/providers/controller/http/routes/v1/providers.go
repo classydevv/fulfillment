@@ -13,14 +13,14 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type providerRoutes struct {
+type controllerProvider struct {
 	uc usecase.Provider
 	l  logger.Interface
 	v  *validator.Validate
 }
 
-func NewProviderRoutes(apiGroup fiber.Router, uc usecase.Provider, l logger.Interface) {
-	r := &providerRoutes{uc, l, validator.New(validator.WithRequiredStructEnabled())}
+func NewRoutesProvider(apiGroup fiber.Router, uc usecase.Provider, l logger.Interface) {
+	r := &controllerProvider{uc, l, validator.New(validator.WithRequiredStructEnabled())}
 	providerGroup := apiGroup.Group("/providers")
 	{
 		providerGroup.Post("", r.providerCreate)
@@ -51,27 +51,27 @@ type providerCreateResponse struct {
 // @Failure     409 {object} responseError
 // @Failure     500 {object} responseError
 // @Router      /providers [post]
-func (r *providerRoutes) providerCreate(ctx *fiber.Ctx) error {
+func (c *controllerProvider) providerCreate(ctx *fiber.Ctx) error {
 	var requestBody providerCreateRequest
 
 	if err := ctx.BodyParser(&requestBody); err != nil {
-		r.l.Error(fmt.Errorf("http - v1 - providerCreate - bodyParser: %w", err))
+		c.l.Error(fmt.Errorf("http - v1 - providerCreate - bodyParser: %w", err))
 
 		return errorResponse(ctx, http.StatusBadRequest, "bad request")
 	}
 
-	if err := r.v.Struct(requestBody); err != nil {
-		r.l.Error(fmt.Errorf("http - v1 - providerCreate - validate: %w", err))
+	if err := c.v.Struct(requestBody); err != nil {
+		c.l.Error(fmt.Errorf("http - v1 - providerCreate - validate: %w", err))
 
 		return errorResponse(ctx, http.StatusBadRequest, "bad request")
 	}
 
-	providerId, err := r.uc.Create(ctx.UserContext(), entity.Provider{
+	providerId, err := c.uc.Create(ctx.UserContext(), entity.Provider{
 		ProviderId: requestBody.ProviderId,
 		Name:       requestBody.Name,
 	})
 	if err != nil {
-		r.l.Error(fmt.Errorf("http - v1 - providerCreate - uc.Save: %w", err))
+		c.l.Error(fmt.Errorf("http - v1 - providerCreate - uc.Save: %w", err))
 
 		if errors.Is(err, entity.ErrAlreadyExists) {
 			return errorResponse(ctx, http.StatusConflict, fmt.Sprintf("%s: %s", requestBody.ProviderId, entity.ErrAlreadyExists.Error()))
@@ -101,10 +101,10 @@ type providerListAllResponse []providerEntityResponse
 // @Success     200 {object} providerListAllResponse
 // @Failure     500 {object} responseError
 // @Router      /providers [get]
-func (r *providerRoutes) providerGetAll(ctx *fiber.Ctx) error {
-	providers, err := r.uc.ListAll(ctx.UserContext())
+func (c *controllerProvider) providerGetAll(ctx *fiber.Ctx) error {
+	providers, err := c.uc.ListAll(ctx.UserContext())
 	if err != nil {
-		r.l.Error(fmt.Errorf("http - v1 - providerGetAll - uc.ListAll: %w", err))
+		c.l.Error(fmt.Errorf("http - v1 - providerGetAll - uc.ListAll: %w", err))
 
 		return errorResponse(ctx, http.StatusInternalServerError, "provider database problems")
 	}
@@ -139,10 +139,10 @@ type providerUpdateResponse providerEntityResponse
 // @Failure     404 {object} responseError
 // @Failure     500 {object} responseError
 // @Router      /providers/{providerId} [put]
-func (r *providerRoutes) providerUpdate(ctx *fiber.Ctx) error {
+func (c *controllerProvider) providerUpdate(ctx *fiber.Ctx) error {
 	var providerId = paramProviderId(ctx.Params("providerId"))
 	if providerId == "" {
-		r.l.Error(fmt.Errorf("http - v1 - providerUpdate - providerId not provided"))
+		c.l.Error(fmt.Errorf("http - v1 - providerUpdate - providerId not provided"))
 
 		return errorResponse(ctx, http.StatusBadRequest, "bad request")
 	}
@@ -150,24 +150,24 @@ func (r *providerRoutes) providerUpdate(ctx *fiber.Ctx) error {
 	var requestBody providerUpdateRequest
 	ctx.Body()
 	if err := ctx.BodyParser(&requestBody); err != nil {
-		r.l.Error(fmt.Errorf("http - v1 - providerUpdate - bodyParser: %w", err))
+		c.l.Error(fmt.Errorf("http - v1 - providerUpdate - bodyParser: %w", err))
 
 		return errorResponse(ctx, http.StatusBadRequest, "bad request")
 	}
 
-	if err := r.v.Struct(requestBody); err != nil {
-		r.l.Error(fmt.Errorf("http - v1 - providerUpdate - validate: %w", err))
+	if err := c.v.Struct(requestBody); err != nil {
+		c.l.Error(fmt.Errorf("http - v1 - providerUpdate - validate: %w", err))
 
 		return errorResponse(ctx, http.StatusBadRequest, "bad request")
 	}
 
-	providerUpdated, err := r.uc.Update(ctx.UserContext(),
+	providerUpdated, err := c.uc.Update(ctx.UserContext(),
 		entity.ProviderId(providerId),
 		entity.Provider{
-			Name: requestBody.Name,  // TODO: do not update if field "name" is not passed
+			Name: requestBody.Name, // TODO: do not update if field "name" is not passed
 		})
 	if err != nil {
-		r.l.Error(fmt.Errorf("http - v1 - providerUpdate - uc.Update: %w", err))
+		c.l.Error(fmt.Errorf("http - v1 - providerUpdate - uc.Update: %w", err))
 
 		if errors.Is(err, entity.ErrNotFound) {
 			return errorResponse(ctx, http.StatusNotFound, fmt.Sprintf("%s: %s", providerId, entity.ErrNotFound.Error()))
@@ -193,18 +193,18 @@ func (r *providerRoutes) providerUpdate(ctx *fiber.Ctx) error {
 // @Failure     404 {object} responseError
 // @Failure     500 {object} responseError
 // @Router      /providers/{providerId} [delete]
-func (r *providerRoutes) providerDelete(ctx *fiber.Ctx) error {
+func (c *controllerProvider) providerDelete(ctx *fiber.Ctx) error {
 	var providerId = paramProviderId(ctx.Params("providerId"))
 	if providerId == "" {
-		r.l.Error(fmt.Errorf("http - v1 - providerDelete - providerId not provided"))
+		c.l.Error(fmt.Errorf("http - v1 - providerDelete - providerId not provided"))
 
 		return errorResponse(ctx, http.StatusBadRequest, "bad request")
 	}
 
-	err := r.uc.Delete(ctx.UserContext(), entity.ProviderId(providerId))
+	err := c.uc.Delete(ctx.UserContext(), entity.ProviderId(providerId))
 
 	if err != nil {
-		r.l.Error(fmt.Errorf("http - v1 - providerDelete - uc.Delete: %w", err))
+		c.l.Error(fmt.Errorf("http - v1 - providerDelete - uc.Delete: %w", err))
 
 		if errors.Is(err, entity.ErrNotFound) {
 			return errorResponse(ctx, http.StatusNotFound, fmt.Sprintf("%s: %s", providerId, entity.ErrNotFound.Error()))

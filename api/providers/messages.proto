@@ -7,25 +7,25 @@ option go_package = "github.com/classydevv/fulfillment/pkg/api/providers";
 // Provider - full provider model
 message Provider {
     // id - идентификатор провайдера
-    string id = 1 [json_name = "id"];
+    string id = 1 [json_name = "id"]; // TODO id should be of type ProviderId
     // name - название провайдера
     string name = 2 [json_name = "name"];
 }
 
-message SaveProviderRequest {
+message CreateProviderRequest {
     // id - идентификатор провайдера
     string id = 1 [json_name = "id"];
     // name - название провайдера
     string name = 2 [json_name = "name"];
 }
 
-message SaveProviderResponse {
+message CreateProviderResponse {
     // id - идентификатор провайдера
     string id = 1 [json_name = "id"];
 }
 
-message ListProvidersRequest {}
+message ListAllProvidersRequest {}
 
-message ListProvidersResponse {
+message ListAllProvidersResponse {
     repeated Provider providers = 1 [json_name = "providers"];
 }
