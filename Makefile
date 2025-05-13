@@ -47,12 +47,6 @@ swag:
 	swag init -g internal/providers/controller/http/router.go
 .PHONY: swag
 
-.protoc-deps: ### Install necessary protoc plugins
-	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-
-.PHONY: .bin-deps
-
 # генерация .go файлов с помощью protoc
 .protoc-generate:
 	mkdir -p $(PKG_PROTO_PATH)
@@ -79,7 +73,7 @@ migrate-down: ### migration down
 	migrate -path migrations -database '$(PG_URL)?sslmode=disable' down
 .PHONY: migrate-down
 
-proto-generate: .protoc-deps .protoc-generate .tidy
+proto-generate: .protoc-generate .tidy
 .PHONY: generate
 
 run: .bin-deps .tidy
