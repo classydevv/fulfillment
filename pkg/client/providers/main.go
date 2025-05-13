@@ -23,7 +23,7 @@ func main() {
 	{
 		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
 		defer cancel()
-		res, err := cli.SaveProvider(ctx, &pb.SaveProviderRequest{Id: "kuper", Name: "Купер"})
+		res, err := cli.CreateProvider(ctx, &pb.CreateProviderRequest{Id: "kuper", Name: "Купер"})
 		if err != nil {
 			log.Fatalf("SaveProvider failed: %v", err)
 		}
@@ -34,7 +34,7 @@ func main() {
 	{
 		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
 		defer cancel()
-		res, err := cli.ListProviders(ctx, &pb.ListProvidersRequest{})
+		res, err := cli.ListAllProviders(ctx, &pb.ListAllProvidersRequest{})
 		if err != nil {
 			log.Fatalf("ListProviders failed: error response: %v", err)
 		}
