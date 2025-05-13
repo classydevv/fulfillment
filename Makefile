@@ -64,10 +64,7 @@ swag:
 .PHONY: .protoc-generate
 
 .bin-deps: ### Install necessary tools
-	go install github.com/swaggo/swag/cmd/swag@latest
-	go install github.com/swaggo/swag/cmd/swag@latest
-	go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
-	go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
+	go install tool
 .PHONY: .bin-deps
 
 .tidy:

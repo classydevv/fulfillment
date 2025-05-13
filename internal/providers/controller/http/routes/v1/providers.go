@@ -148,7 +148,6 @@ func (c *controllerProvider) providerUpdate(ctx *fiber.Ctx) error {
 	}
 
 	var requestBody providerUpdateRequest
-	ctx.Body()
 	if err := ctx.BodyParser(&requestBody); err != nil {
 		c.l.Error(fmt.Errorf("http - v1 - providerUpdate - bodyParser: %w", err))
 

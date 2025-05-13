@@ -81,8 +81,10 @@ func validateSaveProviderRequest(req *pb.CreateProviderRequest) error {
 		if err != nil {
 			return status.Error(codes.Internal, err.Error())
 		}
+		
 		return st.Err()
 	}
+
 	return nil
 }
 
