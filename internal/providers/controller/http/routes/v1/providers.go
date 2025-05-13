@@ -66,7 +66,7 @@ func (c *controllerProvider) providerCreate(ctx *fiber.Ctx) error {
 		return errorResponse(ctx, http.StatusBadRequest, "bad request")
 	}
 
-	providerId, err := c.uc.Create(ctx.UserContext(), entity.Provider{
+	providerId, err := c.uc.Create(ctx.UserContext(), &entity.Provider{
 		ProviderId: requestBody.ProviderId,
 		Name:       requestBody.Name,
 	})
@@ -112,7 +112,7 @@ func (c *controllerProvider) providerGetAll(ctx *fiber.Ctx) error {
 	providersEntityResponse := make([]providerEntityResponse, len(providers))
 
 	for i, p := range providers {
-		providersEntityResponse[i] = providerEntityResponse(p)
+		providersEntityResponse[i] = providerEntityResponse(*p)
 	}
 
 	return ctx.Status(http.StatusOK).JSON(providerListAllResponse(providersEntityResponse))
@@ -162,7 +162,7 @@ func (c *controllerProvider) providerUpdate(ctx *fiber.Ctx) error {
 
 	providerUpdated, err := c.uc.Update(ctx.UserContext(),
 		entity.ProviderId(providerId),
-		entity.Provider{
+		&entity.Provider{
 			Name: requestBody.Name, // TODO: do not update if field "name" is not passed
 		})
 	if err != nil {

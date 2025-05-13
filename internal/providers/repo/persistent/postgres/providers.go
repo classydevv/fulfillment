@@ -20,7 +20,7 @@ func NewPostgresRepo(pg *postgres.Postgres) *PostgresRepo {
 	return &PostgresRepo{pg}
 }
 
-func (pg *PostgresRepo) Store(ctx context.Context, p entity.Provider) error {
+func (pg *PostgresRepo) Store(ctx context.Context, p *entity.Provider) error {
 	query, args, err := pg.Builder.
 		Insert("providers").
 		Columns("provider_id, name").
@@ -44,7 +44,7 @@ func (pg *PostgresRepo) Store(ctx context.Context, p entity.Provider) error {
 	return nil
 }
 
-func (pg *PostgresRepo) GetAll(ctx context.Context) ([]entity.Provider, error) {
+func (pg *PostgresRepo) GetAll(ctx context.Context) ([]*entity.Provider, error) {
 	query, _, err := pg.Builder.
 		Select("*").
 		From("providers").
@@ -58,7 +58,7 @@ func (pg *PostgresRepo) GetAll(ctx context.Context) ([]entity.Provider, error) {
 		return nil, fmt.Errorf("PostgresRepo - GetAll - pg.Pool.Query: %w", err)
 	}
 
-	providers, err := pgx.CollectRows(rows, pgx.RowToStructByName[entity.Provider])
+	providers, err := pgx.CollectRows(rows, pgx.RowToAddrOfStructByName[entity.Provider])
 
 	if err != nil {
 		return nil, fmt.Errorf("PostgresRepo - GetAll - pgx.CollectRows: %w", err)
@@ -67,7 +67,7 @@ func (pg *PostgresRepo) GetAll(ctx context.Context) ([]entity.Provider, error) {
 	return providers, nil
 }
 
-func (pg *PostgresRepo) Update(ctx context.Context, id entity.ProviderId, p entity.Provider) (*entity.Provider, error) {
+func (pg *PostgresRepo) Update(ctx context.Context, id entity.ProviderId, p *entity.Provider) (*entity.Provider, error) {
 	query, args, err := pg.Builder.
 		Update("providers").
 		Set(

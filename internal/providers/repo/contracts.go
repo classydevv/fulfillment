@@ -10,9 +10,9 @@ import (
 
 type (
 	ProviderRepo interface {
-		Store(context.Context, entity.Provider) error
-		GetAll(context.Context) ([]entity.Provider, error)
-		Update(context.Context, entity.ProviderId, entity.Provider) (*entity.Provider, error)
+		Store(context.Context, *entity.Provider) error
+		GetAll(context.Context) ([]*entity.Provider, error)
+		Update(context.Context, entity.ProviderId, *entity.Provider) (*entity.Provider, error)
 		Delete(context.Context, entity.ProviderId) error
 	}
 )

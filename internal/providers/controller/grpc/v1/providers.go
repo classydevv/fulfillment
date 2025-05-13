@@ -34,7 +34,7 @@ func NewControllerProvider(s *grpc.Server, uc usecase.Provider, l logger.Interfa
 }
 
 func (c *controllerProvider) CreateProvider(ctx context.Context, req *pb.CreateProviderRequest) (*pb.CreateProviderResponse, error) {
-	provider := entity.Provider{}
+	provider := new(entity.Provider)
 	provider.ProviderId = entity.ProviderId(req.GetId())
 	provider.Name = req.GetName()
 

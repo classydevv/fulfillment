@@ -18,7 +18,7 @@ func NewUseCaseProviders(r repo.ProviderRepo) *UseCaseProviders {
 	}
 }
 
-func (uc *UseCaseProviders) Create(ctx context.Context, provider entity.Provider) (entity.ProviderId, error) {
+func (uc *UseCaseProviders) Create(ctx context.Context, provider *entity.Provider) (entity.ProviderId, error) {
 	err := uc.repo.Store(ctx, provider)
 	if err != nil {
 		return "", fmt.Errorf("UseCaseProviders - Save - uc.repo.Store: %w", err)
@@ -26,7 +26,7 @@ func (uc *UseCaseProviders) Create(ctx context.Context, provider entity.Provider
 	return provider.ProviderId, nil
 }
 
-func (uc *UseCaseProviders) ListAll(ctx context.Context) ([]entity.Provider, error) {
+func (uc *UseCaseProviders) ListAll(ctx context.Context) ([]*entity.Provider, error) {
 	providers, err := uc.repo.GetAll(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("UseCaseProviders - ListAll - uc.repo.GetAll: %w", err)
@@ -35,7 +35,7 @@ func (uc *UseCaseProviders) ListAll(ctx context.Context) ([]entity.Provider, err
 	return providers, nil
 }
 
-func (uc *UseCaseProviders) Update(ctx context.Context, providerId entity.ProviderId, provider entity.Provider) (*entity.Provider, error) {
+func (uc *UseCaseProviders) Update(ctx context.Context, providerId entity.ProviderId, provider *entity.Provider) (*entity.Provider, error) {
 	providerUpdated, err := uc.repo.Update(ctx, providerId, provider)
 	if err != nil {
 		return nil, fmt.Errorf("UseCaseProviders - Update - uc.repo.Update: %w", err)
