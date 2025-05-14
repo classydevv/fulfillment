@@ -112,7 +112,9 @@ func (c *controllerProvider) providerGetAll(ctx *fiber.Ctx) error {
 	providersEntityResponse := make([]providerEntityResponse, len(providers))
 
 	for i, p := range providers {
-		providersEntityResponse[i] = providerEntityResponse(*p)
+		if p != nil {
+			providersEntityResponse[i] = providerEntityResponse(*p)
+		}
 	}
 
 	return ctx.Status(http.StatusOK).JSON(providerListAllResponse(providersEntityResponse))
