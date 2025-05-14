@@ -6,6 +6,12 @@ x-db-environment: &x-db-environment
   POSTGRES_PASSWORD: "GY34G6TH@!3fghF45"
   POSTGRES_USER: "user"
 
+x-pgadmin-environment: &x-pgadmin-environment
+  PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+  PGADMIN_DEFAULT_PASSWORD: admin
+  PGADMIN_CONFIG_SERVER_MODE: 'False'
+  PGADMIN_PORT: "5050"
+
 x-providers-app-environment: &x-providers-app-environment
   # HTTP
   HTTP_PORT: "8080"
@@ -27,12 +33,13 @@ services:
     environment:
       <<: *x-providers-app-environment
     ports:
-      - "8080:8080"
-      - "8082:8082"
+      - "${HTTP_PORT:-8080}:${HTTP_PORT:-8080}"
+      - "${GRPC_PORT:-8082}:${GRPC_PORT:-8082}"
     depends_on:
       - db
     networks:
       app_network:
+    restart: unless-stopped
 
   db:
     container_name: db
@@ -44,9 +51,25 @@ services:
       - ./postgresql.conf:/etc/postgresql/postgresql.conf
     command: postgres -c config_file=/etc/postgresql/postgresql.conf
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:${POSTGRES_PORT:-5432}"
     networks:
       app_network:
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      <<: *x-pgadmin-environment
+    volumes:
+       - pgadmin:/var/lib/pgadmin
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    depends_on:
+      - db
+    networks:
+      app_network:
+    restart: unless-stopped
 
 
 networks:
@@ -56,3 +79,4 @@ networks:
 
 volumes:
   providers_data:
+  pgadmin:
