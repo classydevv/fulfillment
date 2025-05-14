@@ -6,7 +6,7 @@ import (
 	"github.com/classydevv/fulfillment/internal/providers/entity"
 )
 
-//go:generate mockgen -source=contracts.go -destination=./mocks_usecase_test.go -package=usecase_test
+//go:generate mockgen -source=contracts.go -destination=./mocks/mock_usecase.go
 
 type (
 	Provider interface {
