@@ -26,13 +26,11 @@ func (pg *PostgresRepo) Store(ctx context.Context, p *entity.Provider) error {
 		Columns("provider_id, name").
 		Values(p.ProviderId, p.Name).
 		ToSql()
-
 	if err != nil {
 		return fmt.Errorf("PostgresRepo - Store - pg.Builder: %w", err)
 	}
 
 	_, err = pg.Pool.Exec(ctx, query, args...)
-
 	if err != nil {
 		var pgError *pgconn.PgError
 		if errors.As(err, &pgError) && pgError.Code == pgerrcode.UniqueViolation {
@@ -59,7 +57,6 @@ func (pg *PostgresRepo) GetAll(ctx context.Context) ([]*entity.Provider, error) 
 	}
 
 	providers, err := pgx.CollectRows(rows, pgx.RowToAddrOfStructByName[entity.Provider])
-
 	if err != nil {
 		return nil, fmt.Errorf("PostgresRepo - GetAll - pgx.CollectRows: %w", err)
 	}
@@ -72,7 +69,7 @@ func (pg *PostgresRepo) Update(ctx context.Context, id entity.ProviderId, p *ent
 		Update("providers").
 		Set(
 			"name", p.Name,
-			).
+		).
 		Where("provider_id = ?", id).
 		Suffix("RETURNING *").
 		ToSql()
@@ -85,7 +82,6 @@ func (pg *PostgresRepo) Update(ctx context.Context, id entity.ProviderId, p *ent
 		return nil, fmt.Errorf("PostgresRepo - Update - pg.Pool.Query: %w", err)
 	}
 	provider, err := pgx.CollectOneRow(rows, pgx.RowToAddrOfStructByName[entity.Provider])
-
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, fmt.Errorf("PostgresRepo - Update - pgx.CollectOneRow: %w", entity.ErrNotFound)

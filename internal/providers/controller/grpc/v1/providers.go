@@ -15,7 +15,6 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-
 type controllerProvider struct {
 	pb.UnimplementedProvidersServiceServer
 
@@ -30,7 +29,6 @@ func NewControllerProvider(s *grpc.Server, uc usecase.Provider, l logger.Interfa
 	{
 		pb.RegisterProvidersServiceServer(s, c)
 	}
-
 }
 
 func (c *controllerProvider) CreateProvider(ctx context.Context, req *pb.CreateProviderRequest) (*pb.CreateProviderResponse, error) {
@@ -45,7 +43,6 @@ func (c *controllerProvider) CreateProvider(ctx context.Context, req *pb.CreateP
 	}
 
 	providerId, err := c.uc.Create(ctx, provider)
-
 	if err != nil {
 		c.l.Error(fmt.Errorf("grpc - v1 - CreateProvider - uc.Create: %w", err))
 
@@ -81,7 +78,7 @@ func validateSaveProviderRequest(req *pb.CreateProviderRequest) error {
 		if err != nil {
 			return status.Error(codes.Internal, err.Error())
 		}
-		
+
 		return st.Err()
 	}
 
@@ -90,7 +87,6 @@ func validateSaveProviderRequest(req *pb.CreateProviderRequest) error {
 
 func (c *controllerProvider) ListAllProviders(ctx context.Context, _ *pb.ListAllProvidersRequest) (*pb.ListAllProvidersResponse, error) {
 	providersEntity, err := c.uc.ListAll(ctx)
-
 	if err != nil {
 		c.l.Error(fmt.Errorf("grpc - v1 - ListAllProviders - uc.ListAll: %w", err))
 
@@ -101,7 +97,7 @@ func (c *controllerProvider) ListAllProviders(ctx context.Context, _ *pb.ListAll
 
 	for i, provider := range providersEntity {
 		providers[i] = &pb.Provider{
-			Id: string(provider.ProviderId),
+			Id:   string(provider.ProviderId),
 			Name: provider.Name,
 		}
 	}

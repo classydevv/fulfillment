@@ -8,8 +8,8 @@ import (
 	"time"
 
 	config "github.com/classydevv/fulfillment/configs/providers"
-	"github.com/classydevv/fulfillment/internal/providers/controller/http"
 	"github.com/classydevv/fulfillment/internal/providers/controller/grpc"
+	"github.com/classydevv/fulfillment/internal/providers/controller/http"
 	repo "github.com/classydevv/fulfillment/internal/providers/repo/persistent/postgres"
 	"github.com/classydevv/fulfillment/internal/providers/usecase"
 	"github.com/classydevv/fulfillment/pkg/grpcserver"

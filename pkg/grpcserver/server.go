@@ -8,14 +8,14 @@ import (
 )
 
 type Server struct {
-	App  *grpc.Server
-	notify chan error
+	App     *grpc.Server
+	notify  chan error
 	address string
 }
 
 func New(opts ...Option) *Server {
-	s := &Server {
-		App: grpc.NewServer(),
+	s := &Server{
+		App:    grpc.NewServer(),
 		notify: make(chan error, 1),
 	}
 

@@ -140,7 +140,7 @@ type providerUpdateResponse providerEntityResponse
 // @Failure     500 {object} responseError
 // @Router      /providers/{providerId} [put]
 func (c *controllerProvider) providerUpdate(ctx *fiber.Ctx) error {
-	var providerId = paramProviderId(ctx.Params("providerId"))
+	providerId := paramProviderId(ctx.Params("providerId"))
 	if providerId == "" {
 		c.l.Error(fmt.Errorf("http - v1 - providerUpdate - providerId not provided"))
 
@@ -193,7 +193,7 @@ func (c *controllerProvider) providerUpdate(ctx *fiber.Ctx) error {
 // @Failure     500 {object} responseError
 // @Router      /providers/{providerId} [delete]
 func (c *controllerProvider) providerDelete(ctx *fiber.Ctx) error {
-	var providerId = paramProviderId(ctx.Params("providerId"))
+	providerId := paramProviderId(ctx.Params("providerId"))
 	if providerId == "" {
 		c.l.Error(fmt.Errorf("http - v1 - providerDelete - providerId not provided"))
 
@@ -201,7 +201,6 @@ func (c *controllerProvider) providerDelete(ctx *fiber.Ctx) error {
 	}
 
 	err := c.uc.Delete(ctx.UserContext(), entity.ProviderId(providerId))
-
 	if err != nil {
 		c.l.Error(fmt.Errorf("http - v1 - providerDelete - uc.Delete: %w", err))
 
