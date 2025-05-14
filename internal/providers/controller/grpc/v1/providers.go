@@ -31,36 +31,36 @@ func NewControllerProvider(s *grpc.Server, uc usecase.Provider, l logger.Interfa
 	}
 }
 
-func (c *controllerProvider) CreateProvider(ctx context.Context, req *pb.CreateProviderRequest) (*pb.CreateProviderResponse, error) {
+func (c *controllerProvider) ProviderCreate(ctx context.Context, req *pb.ProviderCreateRequest) (*pb.ProviderCreateResponse, error) {
 	provider := new(entity.Provider)
-	provider.ProviderId = entity.ProviderId(req.GetId())
+	provider.ProviderId = entity.ProviderId(req.GetProviderId())
 	provider.Name = req.GetName()
 
-	if err := validateSaveProviderRequest(req); err != nil {
-		c.l.Error(fmt.Errorf("grpc - v1 - CreateProvider - validateSaveProviderRequest: %w", err))
+	if err := validateProviderCreateRequest(req); err != nil {
+		c.l.Error(fmt.Errorf("grpc - v1 - CreateProvider - validateProviderCreateRequest: %w", err))
 
-		return nil, fmt.Errorf("grpc - v1 - CreateProvider - validateSaveProviderRequest: %w", err)
+		return nil, fmt.Errorf("grpc - v1 - CreateProvider - validateProviderCreateRequest: %w", err)
 	}
 
 	providerId, err := c.uc.Create(ctx, provider)
 	if err != nil {
-		c.l.Error(fmt.Errorf("grpc - v1 - CreateProvider - uc.Create: %w", err))
+		c.l.Error(fmt.Errorf("grpc - v1 - ProviderCreate - uc.Create: %w", err))
 
-		return nil, fmt.Errorf("grpc - v1 - CreateProvider - uc.Create: %w", err)
+		return nil, fmt.Errorf("grpc - v1 - ProviderCreate - uc.Create: %w", err)
 	}
 
-	return &pb.CreateProviderResponse{
-		Id: string(providerId),
+	return &pb.ProviderCreateResponse{
+		ProviderId: string(providerId),
 	}, nil
 }
 
-func validateSaveProviderRequest(req *pb.CreateProviderRequest) error {
-	id := req.GetId()
+func validateProviderCreateRequest(req *pb.ProviderCreateRequest) error {
+	providerId := req.GetProviderId()
 	name := req.GetName()
 	var violations []*errdetails.BadRequest_FieldViolation
-	if id == "" {
+	if providerId == "" {
 		violations = append(violations, &errdetails.BadRequest_FieldViolation{
-			Field:       "id",
+			Field:       "provider_id",
 			Description: "empty",
 		})
 	}
@@ -85,24 +85,117 @@ func validateSaveProviderRequest(req *pb.CreateProviderRequest) error {
 	return nil
 }
 
-func (c *controllerProvider) ListAllProviders(ctx context.Context, _ *pb.ListAllProvidersRequest) (*pb.ListAllProvidersResponse, error) {
+func (c *controllerProvider) ProviderListAll(ctx context.Context, _ *pb.ProviderListAllRequest) (*pb.ProviderListAllResponse, error) {
 	providersEntity, err := c.uc.ListAll(ctx)
 	if err != nil {
-		c.l.Error(fmt.Errorf("grpc - v1 - ListAllProviders - uc.ListAll: %w", err))
+		c.l.Error(fmt.Errorf("grpc - v1 - ProviderListAll - uc.ListAll: %w", err))
 
-		return nil, fmt.Errorf("grpc - v1 - ListAllProviders - uc.ListAll: %w", err)
+		return nil, fmt.Errorf("grpc - v1 - ProviderListAll - uc.ListAll: %w", err)
 	}
 
 	providers := make([]*pb.Provider, len(providersEntity))
 
 	for i, provider := range providersEntity {
 		providers[i] = &pb.Provider{
-			Id:   string(provider.ProviderId),
+			ProviderId:   string(provider.ProviderId),
 			Name: provider.Name,
 		}
 	}
 
-	return &pb.ListAllProvidersResponse{
+	return &pb.ProviderListAllResponse{
 		Providers: providers,
 	}, nil
+}
+
+func (c *controllerProvider) ProviderUpdate(ctx context.Context, req *pb.ProviderUpdateRequest) (*pb.ProviderUpdateResponse, error) {
+	provider := new(entity.Provider)
+	provider.ProviderId = entity.ProviderId(req.GetProviderId())
+	provider.Name = req.GetName()
+
+	if err := validateProviderUpdateRequest(req); err != nil {
+		c.l.Error(fmt.Errorf("grpc - v1 - ProviderUpdate - validateProviderUpdateRequest: %w", err))
+
+		return nil, fmt.Errorf("grpc - v1 - ProviderUpdate - validateProviderUpdateRequest: %w", err)
+	}
+
+	providerUpdated, err := c.uc.Update(ctx, provider.ProviderId, provider)
+	if err != nil {
+		c.l.Error(fmt.Errorf("grpc - v1 - ProviderUpdate - uc.Update: %w", err))
+
+		return nil, fmt.Errorf("grpc - v1 - ProviderUpdate - uc.Update: %w", err)
+	}
+
+	return &pb.ProviderUpdateResponse{
+		Provider: &pb.Provider{
+			ProviderId: string(providerUpdated.ProviderId),
+			Name: providerUpdated.Name,
+		},
+	}, nil
+}
+
+func validateProviderUpdateRequest(req *pb.ProviderUpdateRequest) error {
+	providerId := req.GetProviderId()
+	var violations []*errdetails.BadRequest_FieldViolation
+	if providerId == "" {
+		violations = append(violations, &errdetails.BadRequest_FieldViolation{
+			Field:       "provider_id",
+			Description: "empty",
+		})
+	}
+	if len(violations) > 0 {
+		st, err := status.New(codes.InvalidArgument, codes.InvalidArgument.String()).WithDetails(
+			&errdetails.BadRequest{
+				FieldViolations: violations,
+			})
+		if err != nil {
+			return status.Error(codes.Internal, err.Error())
+		}
+
+		return st.Err()
+	}
+
+	return nil
+}
+
+func (c *controllerProvider) ProviderDelete(ctx context.Context, req *pb.ProviderDeleteRequest) (*pb.ProviderDeleteResponse, error) {
+	providerId := entity.ProviderId(req.GetProviderId())
+
+	if err := validateProviderDeleteRequest(req); err != nil {
+		c.l.Error(fmt.Errorf("grpc - v1 - ProviderDelete - validateProviderDeleteRequest: %w", err))
+
+		return nil, fmt.Errorf("grpc - v1 - ProviderDelete - validateProviderDeleteRequest: %w", err)
+	}
+
+	err := c.uc.Delete(ctx, providerId)
+	if err != nil {
+		c.l.Error(fmt.Errorf("grpc - v1 - ProviderDelete - uc.Delete: %w", err))
+
+		return nil, fmt.Errorf("grpc - v1 - ProviderDelete - uc.Delete: %w", err)
+	}
+
+	return &pb.ProviderDeleteResponse{}, nil
+}
+
+func validateProviderDeleteRequest(req *pb.ProviderDeleteRequest) error {
+	providerId := req.GetProviderId()
+	var violations []*errdetails.BadRequest_FieldViolation
+	if providerId == "" {
+		violations = append(violations, &errdetails.BadRequest_FieldViolation{
+			Field:       "provider_id",
+			Description: "empty",
+		})
+	}
+	if len(violations) > 0 {
+		st, err := status.New(codes.InvalidArgument, codes.InvalidArgument.String()).WithDetails(
+			&errdetails.BadRequest{
+				FieldViolations: violations,
+			})
+		if err != nil {
+			return status.Error(codes.Internal, err.Error())
+		}
+
+		return st.Err()
+	}
+
+	return nil
 }

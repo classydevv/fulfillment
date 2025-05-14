@@ -82,7 +82,7 @@ protoc-generate:
 .PHONY: protoc-generate
 
 proto-generate: protoc-generate tidy
-.PHONY: generate
+.PHONY: proto-generate
 
 mock:
 	go generate -run mockgen -n ./internal/...
@@ -101,8 +101,14 @@ pre-commit: swag proto-generate mock format linter-golangci test
 
 # тестовые запросы с помощью grpcurl
 grpc-provider-create:
-	grpcurl -plaintext -d '{"id": "kuper", "name": "Купер"}' \
-	localhost:8082 github.com.classydevv.fulfillment.providers.ProvidersService.CreateProvider
+	grpcurl -plaintext -d '{"provider_id": "aliexpress", "name": "Алик"}' \
+	localhost:8082 github.com.classydevv.fulfillment.providers.ProvidersService.ProviderCreate
 grpc-provider-list-all:
 	grpcurl -plaintext -d '' \
-	localhost:8082 github.com.classydevv.fulfillment.providers.ProvidersService.ListAllProviders
+	localhost:8082 github.com.classydevv.fulfillment.providers.ProvidersService.ProviderListAll
+grpc-provider-update:
+	grpcurl -plaintext -d '{"provider_id": "kuper", "name": "Новое"}' \
+	localhost:8082 github.com.classydevv.fulfillment.providers.ProvidersService.ProviderUpdate
+grpc-provider-delete:
+	grpcurl -plaintext -d '{"provider_id": "kuper"}' \
+	localhost:8082 github.com.classydevv.fulfillment.providers.ProvidersService.ProviderDelete

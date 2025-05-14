@@ -23,18 +23,18 @@ func main() {
 	{
 		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
 		defer cancel()
-		res, err := cli.CreateProvider(ctx, &pb.CreateProviderRequest{Id: "kuper", Name: "Купер"})
+		res, err := cli.ProviderCreate(ctx, &pb.ProviderCreateRequest{ProviderId: "kuper", Name: "Купер"})
 		if err != nil {
 			log.Fatalf("SaveProvider failed: %v", err)
 		}
-		log.Printf("SaveProvider success: providerId: %v", res.GetId())
+		log.Printf("SaveProvider success: providerId: %v", res.GetProviderId())
 	}
 
 	// ListProviders
 	{
 		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
 		defer cancel()
-		res, err := cli.ListAllProviders(ctx, &pb.ListAllProvidersRequest{})
+		res, err := cli.ProviderListAll(ctx, &pb.ProviderListAllRequest{})
 		if err != nil {
 			log.Fatalf("ListProviders failed: error response: %v", err)
 		}
