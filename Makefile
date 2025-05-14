@@ -62,6 +62,11 @@ tidy:
 	go mod tidy && go mod verify
 .PHONY: tidy
 
+security: ### Security check
+	govulncheck ./...
+	gosec ./...
+.PHONY: security
+
 swag:	
 	swag init -g internal/providers/controller/http/router.go
 .PHONY: swag
