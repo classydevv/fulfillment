@@ -101,13 +101,13 @@ pre-commit: swag proto-generate mock format linter-golangci test
 
 # тестовые запросы с помощью grpcurl
 grpc-provider-create:
-	grpcurl -plaintext -d '{"provider_id": "aliexpress", "name": "Алик"}' \
+	grpcurl -plaintext -d '{"provider_id": "kuper", "name": "Купер"}' \
 	localhost:8082 github.com.classydevv.fulfillment.providers.ProvidersService.ProviderCreate
 grpc-provider-list-all:
 	grpcurl -plaintext -d '' \
 	localhost:8082 github.com.classydevv.fulfillment.providers.ProvidersService.ProviderListAll
 grpc-provider-update:
-	grpcurl -plaintext -d '{"provider_id": "kuper", "name": "Новое"}' \
+	grpcurl -plaintext -d '{"provider_id": "kuper"}' \
 	localhost:8082 github.com.classydevv.fulfillment.providers.ProvidersService.ProviderUpdate
 grpc-provider-delete:
 	grpcurl -plaintext -d '{"provider_id": "kuper"}' \
