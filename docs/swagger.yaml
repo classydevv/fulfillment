@@ -89,7 +89,7 @@ paths:
             $ref: '#/definitions/v1.responseError'
       summary: List all providers
       tags:
-      - provider
+      - Provider
     post:
       consumes:
       - application/json
@@ -123,7 +123,7 @@ paths:
             $ref: '#/definitions/v1.responseError'
       summary: Create a new provider
       tags:
-      - provider
+      - Provider
   /providers/{providerId}:
     delete:
       consumes:
@@ -155,7 +155,7 @@ paths:
             $ref: '#/definitions/v1.responseError'
       summary: Delete a provider
       tags:
-      - provider
+      - Provider
     put:
       consumes:
       - application/json
@@ -194,5 +194,5 @@ paths:
             $ref: '#/definitions/v1.responseError'
       summary: Update a provider
       tags:
-      - provider
+      - Provider
 swagger: "2.0"

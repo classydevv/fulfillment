@@ -25,7 +25,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "provider"
+                    "Provider"
                 ],
                 "summary": "List all providers",
                 "operationId": "providerListAll",
@@ -56,7 +56,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "provider"
+                    "Provider"
                 ],
                 "summary": "Create a new provider",
                 "operationId": "providerCreate",
@@ -109,7 +109,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "provider"
+                    "Provider"
                 ],
                 "summary": "Update a provider",
                 "operationId": "providerUpdate",
@@ -167,7 +167,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "provider"
+                    "Provider"
                 ],
                 "summary": "Delete a provider",
                 "operationId": "providerDelete",

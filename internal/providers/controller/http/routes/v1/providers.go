@@ -42,7 +42,7 @@ type providerCreateResponse struct {
 //	@Summary		Create a new provider
 //	@Description	Creates a new delivery provider
 //	@ID				providerCreate
-//	@Tags			provider
+//	@Tags			Provider
 //	@Accept			json
 //	@Produce		json
 //	@Param			body	body		providerCreateRequest	true	"Provider create parameters"
@@ -95,7 +95,7 @@ type providerListAllResponse []providerEntityResponse
 //	@Summary		List all providers
 //	@Description	List all available providers registered in the system
 //	@ID				providerListAll
-//	@Tags			provider
+//	@Tags			Provider
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{object}	providerListAllResponse
@@ -131,7 +131,7 @@ type providerUpdateResponse providerEntityResponse
 //	@Summary		Update a provider
 //	@Description	Updates a delivery provider
 //	@ID				providerUpdate
-//	@Tags			provider
+//	@Tags			Provider
 //	@Accept			json
 //	@Produce		json
 //	@Param			providerId	path		string					true	"Provider ID"
@@ -185,7 +185,7 @@ func (c *controllerProvider) providerUpdate(ctx *fiber.Ctx) error {
 //	@Summary		Delete a provider
 //	@Description	Deletes a delivery provider
 //	@ID				providerDelete
-//	@Tags			provider
+//	@Tags			Provider
 //	@Accept			json
 //	@Produce		json
 //	@Param			providerId	path	string	true	"Provider ID"
