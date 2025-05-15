@@ -48,7 +48,7 @@ services:
       <<: *x-db-environment
     volumes:
       - providers_data:/var/lib/postgresql/data
-      - ./postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./configs/postgres/postgresql.conf:/etc/postgresql/postgresql.conf
     command: postgres -c config_file=/etc/postgresql/postgresql.conf
     ports:
       - "${POSTGRES_PORT:-5432}:${POSTGRES_PORT:-5432}"
