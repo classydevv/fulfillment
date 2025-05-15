@@ -39,18 +39,18 @@ type providerCreateResponse struct {
 	ProviderId entity.ProviderId `json:"provider_id" example:"kuper"`
 }
 
-// @Summary     Create a new provider
-// @Description Creates a new delivery provider
-// @ID          providerCreate
-// @Tags  	    provider
-// @Accept      json
-// @Produce     json
-// @Param       body body providerCreateRequest true "Provider create parameters"
-// @Success     201 {object} providerCreateResponse
-// @Failure     400 {object} responseError
-// @Failure     409 {object} responseError
-// @Failure     500 {object} responseError
-// @Router      /providers [post]
+//	@Summary		Create a new provider
+//	@Description	Creates a new delivery provider
+//	@ID				providerCreate
+//	@Tags			provider
+//	@Accept			json
+//	@Produce		json
+//	@Param			body	body		providerCreateRequest	true	"Provider create parameters"
+//	@Success		201		{object}	providerCreateResponse
+//	@Failure		400		{object}	responseError
+//	@Failure		409		{object}	responseError
+//	@Failure		500		{object}	responseError
+//	@Router			/providers [post]
 func (c *controllerProvider) providerCreate(ctx *fiber.Ctx) error {
 	var requestBody providerCreateRequest
 
@@ -92,15 +92,15 @@ type providerEntityResponse struct {
 
 type providerListAllResponse []providerEntityResponse
 
-// @Summary     List all providers
-// @Description List all available providers registered in the system
-// @ID          providerListAll
-// @Tags  	    provider
-// @Accept      json
-// @Produce     json
-// @Success     200 {object} providerListAllResponse
-// @Failure     500 {object} responseError
-// @Router      /providers [get]
+//	@Summary		List all providers
+//	@Description	List all available providers registered in the system
+//	@ID				providerListAll
+//	@Tags			provider
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	providerListAllResponse
+//	@Failure		500	{object}	responseError
+//	@Router			/providers [get]
 func (c *controllerProvider) providerGetAll(ctx *fiber.Ctx) error {
 	providers, err := c.uc.ListAll(ctx.UserContext())
 	if err != nil {
@@ -128,19 +128,19 @@ type providerUpdateRequest struct {
 
 type providerUpdateResponse providerEntityResponse
 
-// @Summary     Update a provider
-// @Description Updates a delivery provider
-// @ID          providerUpdate
-// @Tags  	    provider
-// @Accept      json
-// @Produce     json
-// @Param       providerId path string true "Provider ID"
-// @Param       body body providerUpdateRequest true "Provider update parameters"
-// @Success     200 {object} providerUpdateResponse
-// @Failure     400 {object} responseError
-// @Failure     404 {object} responseError
-// @Failure     500 {object} responseError
-// @Router      /providers/{providerId} [put]
+//	@Summary		Update a provider
+//	@Description	Updates a delivery provider
+//	@ID				providerUpdate
+//	@Tags			provider
+//	@Accept			json
+//	@Produce		json
+//	@Param			providerId	path		string					true	"Provider ID"
+//	@Param			body		body		providerUpdateRequest	true	"Provider update parameters"
+//	@Success		200			{object}	providerUpdateResponse
+//	@Failure		400			{object}	responseError
+//	@Failure		404			{object}	responseError
+//	@Failure		500			{object}	responseError
+//	@Router			/providers/{providerId} [put]
 func (c *controllerProvider) providerUpdate(ctx *fiber.Ctx) error {
 	providerId := paramProviderId(ctx.Params("providerId"))
 	if providerId == "" {
@@ -182,18 +182,18 @@ func (c *controllerProvider) providerUpdate(ctx *fiber.Ctx) error {
 
 // type providerDeleteResponse struct{}
 
-// @Summary     Delete a provider
-// @Description Deletes a delivery provider
-// @ID          providerDelete
-// @Tags  	    provider
-// @Accept      json
-// @Produce     json
-// @Param       providerId path string true "Provider ID"
-// @Success     204
-// @Failure     400 {object} responseError
-// @Failure     404 {object} responseError
-// @Failure     500 {object} responseError
-// @Router      /providers/{providerId} [delete]
+//	@Summary		Delete a provider
+//	@Description	Deletes a delivery provider
+//	@ID				providerDelete
+//	@Tags			provider
+//	@Accept			json
+//	@Produce		json
+//	@Param			providerId	path	string	true	"Provider ID"
+//	@Success		204
+//	@Failure		400	{object}	responseError
+//	@Failure		404	{object}	responseError
+//	@Failure		500	{object}	responseError
+//	@Router			/providers/{providerId} [delete]
 func (c *controllerProvider) providerDelete(ctx *fiber.Ctx) error {
 	providerId := paramProviderId(ctx.Params("providerId"))
 	if providerId == "" {

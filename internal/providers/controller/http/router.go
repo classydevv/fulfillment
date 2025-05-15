@@ -15,11 +15,11 @@ import (
 )
 
 // Swagger spec:
-// @title       Provider API
-// @description Service to manager all provider related data: delivery zones and slots, pickup points, tariffs, etc.
-// @version     1.0
-// @host        localhost:8080
-// @BasePath    /v1
+//	@title			Provider API
+//	@description	Service to manager all provider related data: delivery zones and slots, pickup points, tariffs, etc.
+//	@version		1.0
+//	@host			localhost:8080
+//	@BasePath		/v1
 func NewRouterProvider(app *fiber.App, uc usecase.Provider, cfg *config.Config, l logger.Interface) {
 	// Options
 	app.Use(middleware.Logger(l))
