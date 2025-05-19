@@ -1,6 +1,7 @@
 package app
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/signal"
@@ -38,9 +39,11 @@ func Run(cfg *config.Config) {
 	)
 
 	// ** Delivery **
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 	// HTTP Server
 	httpServer := httpserver.New(
-		httpserver.Port(cfg.HTTP.Port),
+		httpserver.Address("", cfg.HTTP.Port),
 		httpserver.ReadTimeout(time.Duration(cfg.HTTP.ReadTimeoutSeconds)*time.Second),
 		httpserver.WriteTimeout(time.Duration(cfg.HTTP.WriteTimeoutSeconds)*time.Second),
 		httpserver.ServerShutdownTimeout(time.Duration(cfg.HTTP.ServerShutdownTimeout)*time.Second),
@@ -48,15 +51,19 @@ func Run(cfg *config.Config) {
 	http.NewRouterProvider(httpServer.App, providerUseCase, cfg, l)
 
 	// GRPC Server
-	grpcServer := grpcserver.New(grpcserver.Port(cfg.GRPC.Port))
-	grpc.NewRouterProvider(grpcServer.App, providerUseCase, l)
+	grpcServer := grpcserver.New(
+		ctx,
+		grpcserver.AddressGRPC("", cfg.GRPC.Port),
+		grpcserver.AddressGateway("", cfg.GRPC.GatewayPort),
+	)
+	grpc.NewRouterProvider(ctx, grpcServer, providerUseCase, l)
 
 	// Start servers
 	httpServer.Run()
 	grpcServer.Run()
 
 	// Wait for errors
-	interrupt := make(chan os.Signal, 1)
+	interrupt := make(chan os.Signal, 10)
 	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)
 
 	select {
@@ -73,7 +80,7 @@ func Run(cfg *config.Config) {
 	if err != nil {
 		l.Error(fmt.Errorf("providers - Run - httpServer.Shutdown: %w", err))
 	}
-	err = grpcServer.Shutdown()
+	err = grpcServer.Shutdown(ctx)
 	if err != nil {
 		l.Error(fmt.Errorf("providers - Run - grpcServer.Shutdown: %w", err))
 	}

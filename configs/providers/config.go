@@ -17,7 +17,8 @@ type (
 	}
 
 	GRPC struct {
-		Port string `env:"GRPC_PORT,required"`
+		Port        string `env:"GRPC_PORT,required"`
+		GatewayPort string `env:"GRPC_GATEWAY_PORT,required"`
 	}
 
 	HTTP struct {

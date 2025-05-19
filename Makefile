@@ -75,10 +75,15 @@ swag:
 protoc-generate:
 	mkdir -p $(PKG_PROTO_PATH)
 	protoc --proto_path=$(CURDIR) \
-	--go_out=$(PKG_PROTO_PATH) --go_opt=paths=source_relative \
-	--go-grpc_out=$(PKG_PROTO_PATH) --go-grpc_opt=paths=source_relative \
+	--go_out=$(PKG_PROTO_PATH) --go_opt paths=source_relative \
+	--go-grpc_out=$(PKG_PROTO_PATH) --go-grpc_opt paths=source_relative \
+	--grpc-gateway_out=$(PKG_PROTO_PATH) --grpc-gateway_opt paths=source_relative --grpc-gateway_opt generate_unbound_methods=true \
 	$(PROTO_PATH)/$(SERVICE_NAME)/service.proto \
 	$(PROTO_PATH)/$(SERVICE_NAME)/messages.proto
+
+	protoc --proto_path=$(CURDIR) \
+	--openapiv2_out=. --openapiv2_opt logtostderr=true --openapiv2_opt generate_unbound_methods=true \
+	$(PROTO_PATH)/$(SERVICE_NAME)/service.proto
 .PHONY: protoc-generate
 
 proto-generate: protoc-generate tidy

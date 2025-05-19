@@ -7,9 +7,9 @@ import (
 
 type Option func(*Server)
 
-func Port(port string) Option {
+func Address(host string, port string) Option {
 	return func(s *Server) {
-		s.address = net.JoinHostPort("", port)
+		s.address = net.JoinHostPort(host, port)
 	}
 }
 

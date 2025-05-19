@@ -7,10 +7,10 @@ import (
 	"github.com/classydevv/fulfillment/internal/providers/entity"
 	"github.com/classydevv/fulfillment/internal/providers/usecase"
 	pb "github.com/classydevv/fulfillment/pkg/api/providers"
+	"github.com/classydevv/fulfillment/pkg/grpcserver"
 	"github.com/classydevv/fulfillment/pkg/logger"
 	"github.com/go-playground/validator/v10"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
-	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -23,11 +23,12 @@ type controllerProvider struct {
 	v  *validator.Validate
 }
 
-func NewControllerProvider(s *grpc.Server, uc usecase.Provider, l logger.Interface) {
+func NewControllerProvider(ctx context.Context, s *grpcserver.Server, uc usecase.Provider, l logger.Interface) {
 	c := &controllerProvider{uc: uc, l: l, v: validator.New(validator.WithRequiredStructEnabled())}
 
 	{
-		pb.RegisterProvidersServiceServer(s, c)
+		pb.RegisterProvidersServiceServer(s.GRPC.Server, c)
+		pb.RegisterProvidersServiceHandlerServer(ctx, s.Gateway.Mux, c)
 	}
 }
 
