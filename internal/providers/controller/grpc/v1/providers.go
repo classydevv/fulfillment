@@ -14,6 +14,7 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type controllerProvider struct {
@@ -101,6 +102,8 @@ func (c *controllerProvider) ProviderListAll(ctx context.Context, _ *pb.Provider
 		providers[i] = &pb.Provider{
 			ProviderId: string(provider.ProviderId),
 			Name:       provider.Name,
+			CreatedAt:  timestamppb.New(provider.CreatedAt),
+			UpdatedAt:  timestamppb.New(provider.UpdatedAt),
 		}
 	}
 

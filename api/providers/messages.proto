@@ -12,6 +12,8 @@ option go_package = "github.com/classydevv/fulfillment/pkg/api/providers/v1;prov
 message Provider {
     string provider_id = 1 [json_name = "provider_id"];
     string name = 2 [json_name = "name"];
+    google.protobuf.Timestamp created_at = 3 [json_name = "created_at"];
+    google.protobuf.Timestamp updated_at = 4 [json_name = "updated_at"];
 }
 
 message ProviderCreateRequest {

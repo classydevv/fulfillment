@@ -11,7 +11,7 @@ import (
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	_ "google.golang.org/protobuf/types/known/timestamppb"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -28,6 +28,8 @@ type Provider struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ProviderId    string                 `protobuf:"bytes,1,opt,name=provider_id,proto3" json:"provider_id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=created_at,proto3" json:"created_at,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=updated_at,proto3" json:"updated_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -74,6 +76,20 @@ func (x *Provider) GetName() string {
 		return x.Name
 	}
 	return ""
+}
+
+func (x *Provider) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *Provider) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
 }
 
 type ProviderCreateRequest struct {
@@ -432,10 +448,16 @@ var File_api_providers_messages_proto protoreflect.FileDescriptor
 
 const file_api_providers_messages_proto_rawDesc = "" +
 	"\n" +
-	"\x1capi/providers/messages.proto\x12.github.com.classydevv.fulfillment.providers.v1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"@\n" +
+	"\x1capi/providers/messages.proto\x12.github.com.classydevv.fulfillment.providers.v1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xb8\x01\n" +
 	"\bProvider\x12 \n" +
 	"\vprovider_id\x18\x01 \x01(\tR\vprovider_id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"\xab\x01\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12:\n" +
+	"\n" +
+	"created_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"created_at\x12:\n" +
+	"\n" +
+	"updated_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"updated_at\"\xab\x01\n" +
 	"\x15ProviderCreateRequest\x12%\n" +
 	"\vprovider_id\x18\x01 \x01(\tB\x03\xe0A\x02R\vprovider_id\x12\x17\n" +
 	"\x04name\x18\x02 \x01(\tB\x03\xe0A\x02R\x04name:R\x92AO\n" +
@@ -478,15 +500,18 @@ var file_api_providers_messages_proto_goTypes = []any{
 	(*ProviderUpdateResponse)(nil),  // 6: github.com.classydevv.fulfillment.providers.v1.ProviderUpdateResponse
 	(*ProviderDeleteRequest)(nil),   // 7: github.com.classydevv.fulfillment.providers.v1.ProviderDeleteRequest
 	(*ProviderDeleteResponse)(nil),  // 8: github.com.classydevv.fulfillment.providers.v1.ProviderDeleteResponse
+	(*timestamppb.Timestamp)(nil),   // 9: google.protobuf.Timestamp
 }
 var file_api_providers_messages_proto_depIdxs = []int32{
-	0, // 0: github.com.classydevv.fulfillment.providers.v1.ProviderListAllResponse.providers:type_name -> github.com.classydevv.fulfillment.providers.v1.Provider
-	0, // 1: github.com.classydevv.fulfillment.providers.v1.ProviderUpdateResponse.provider:type_name -> github.com.classydevv.fulfillment.providers.v1.Provider
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	9, // 0: github.com.classydevv.fulfillment.providers.v1.Provider.created_at:type_name -> google.protobuf.Timestamp
+	9, // 1: github.com.classydevv.fulfillment.providers.v1.Provider.updated_at:type_name -> google.protobuf.Timestamp
+	0, // 2: github.com.classydevv.fulfillment.providers.v1.ProviderListAllResponse.providers:type_name -> github.com.classydevv.fulfillment.providers.v1.Provider
+	0, // 3: github.com.classydevv.fulfillment.providers.v1.ProviderUpdateResponse.provider:type_name -> github.com.classydevv.fulfillment.providers.v1.Provider
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_api_providers_messages_proto_init() }
