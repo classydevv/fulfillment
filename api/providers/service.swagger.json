@@ -1,13 +1,18 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "api/providers/service.proto",
-    "version": "version not set"
+    "title": "Provider API",
+    "description": "Service to manager all provider related data: delivery zones and slots, pickup points, tariffs, etc.",
+    "version": "1.0"
   },
   "tags": [
     {
       "name": "ProvidersService"
     }
+  ],
+  "schemes": [
+    "http",
+    "https"
   ],
   "consumes": [
     "application/json"

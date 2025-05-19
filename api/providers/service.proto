@@ -3,8 +3,19 @@ syntax = "proto3";
 package github.com.classydevv.fulfillment.providers;
 
 import "api/providers/messages.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "github.com/classydevv/fulfillment/pkg/api/providers";
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+    info: {
+      title: "Provider API";
+      description: "Service to manager all provider related data: delivery zones and slots, pickup points, tariffs, etc.";
+      version: "1.0";
+    };
+    schemes: HTTP;
+    schemes: HTTPS;
+};
 
 service ProvidersService {
     rpc ProviderCreate(ProviderCreateRequest) returns (ProviderCreateResponse) {}

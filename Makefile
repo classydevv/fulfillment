@@ -4,8 +4,14 @@ export
 # Путь до protobuf файлов
 PROTO_PATH := $(CURDIR)/api
 
+# Путь до buf yaml файла
+BUF_GEN_FILE := $(CURDIR)/configs/buf/buf.gen.yaml
+
 # Путь до сгенеренных .pb.go файлов
 PKG_PROTO_PATH := $(CURDIR)/pkg
+
+# Путь до завендореных protobuf файлов
+VENDOR_PROTO_PATH := $(CURDIR)/vendor.protobuf
 
 # Имя сервиса
 SERVICE_NAME := providers
@@ -71,20 +77,74 @@ swag:
 	swag init -g internal/providers/controller/http/router.go
 .PHONY: swag
 
-# генерация .go файлов с помощью protoc
-protoc-generate:
+vendor-proto: .vendor-proto-reset .vendor-proto-googleapis .vendor-proto-google-protobuf .vendor-proto-protovalidate .vendor-proto-protoc-gen-openapiv2 .vendor-proto-tidy
+
+.vendor-proto-reset:
+	rm -rf $(VENDOR_PROTO_PATH)
+	mkdir -p $(VENDOR_PROTO_PATH)
+.PHONY: .vendor-proto-reset
+
+.vendor-proto-tidy:
+	find $(VENDOR_PROTO_PATH) -type f ! -name "*.proto" -delete
+	find $(VENDOR_PROTO_PATH) -empty -type d -delete
+.PHONY: .vendor-proto-tidy
+
+.vendor-proto-google-protobuf:
+	git clone -b main --single-branch -n --depth=1 --filter=tree:0 \
+		https://github.com/protocolbuffers/protobuf $(VENDOR_PROTO_PATH)/protobuf &&\
+	cd $(VENDOR_PROTO_PATH)/protobuf &&\
+	git sparse-checkout set --no-cone src/google/protobuf &&\
+	git checkout
+	mkdir -p $(VENDOR_PROTO_PATH)/google
+	mv $(VENDOR_PROTO_PATH)/protobuf/src/google/protobuf $(VENDOR_PROTO_PATH)/google
+	rm -rf $(VENDOR_PROTO_PATH)/protobuf
+.PHONY: .vendor-proto-google-protobuf
+
+.vendor-proto-protovalidate:
+	git clone -b main --single-branch --depth=1 --filter=tree:0 \
+		https://github.com/bufbuild/protovalidate $(VENDOR_PROTO_PATH)/protovalidate && \
+	cd $(VENDOR_PROTO_PATH)/protovalidate
+	git checkout
+	mv $(VENDOR_PROTO_PATH)/protovalidate/proto/protovalidate/buf $(VENDOR_PROTO_PATH)
+	rm -rf $(VENDOR_PROTO_PATH)/protovalidate
+.PHONY: .vendor-proto-protovalidate
+
+.vendor-proto-googleapis:
+	git clone -b master --single-branch -n --depth=1 --filter=tree:0 \
+		https://github.com/googleapis/googleapis $(VENDOR_PROTO_PATH)/googleapis &&\
+	cd $(VENDOR_PROTO_PATH)/googleapis &&\
+	git checkout
+	mv $(VENDOR_PROTO_PATH)/googleapis/google $(VENDOR_PROTO_PATH)
+	rm -rf $(VENDOR_PROTO_PATH)/googleapis
+.PHONY: .vendor-proto-googleapis
+
+.vendor-proto-protoc-gen-openapiv2:
+	git clone -b main --single-branch -n --depth=1 --filter=tree:0 \
+ 		https://github.com/grpc-ecosystem/grpc-gateway $(VENDOR_PROTO_PATH)/grpc-gateway && \
+ 	cd $(VENDOR_PROTO_PATH)/grpc-gateway && \
+	git sparse-checkout set --no-cone protoc-gen-openapiv2/options && \
+	git checkout
+	mkdir -p $(VENDOR_PROTO_PATH)/protoc-gen-openapiv2
+	mv $(VENDOR_PROTO_PATH)/grpc-gateway/protoc-gen-openapiv2/options $(VENDOR_PROTO_PATH)/protoc-gen-openapiv2
+	rm -rf $(VENDOR_PROTO_PATH)/grpc-gateway
+.PHONY: .vendor-proto-protoc-gen-openapiv2
+
+protoc-generate: ### Generate code from .proto using protoc
 	mkdir -p $(PKG_PROTO_PATH)
-	protoc --proto_path=$(CURDIR) \
+	protoc -I $(VENDOR_PROTO_PATH) --proto_path=$(CURDIR) \
 	--go_out=$(PKG_PROTO_PATH) --go_opt paths=source_relative \
 	--go-grpc_out=$(PKG_PROTO_PATH) --go-grpc_opt paths=source_relative \
 	--grpc-gateway_out=$(PKG_PROTO_PATH) --grpc-gateway_opt paths=source_relative --grpc-gateway_opt generate_unbound_methods=true \
 	$(PROTO_PATH)/$(SERVICE_NAME)/service.proto \
 	$(PROTO_PATH)/$(SERVICE_NAME)/messages.proto
 
-	protoc --proto_path=$(CURDIR) \
+	protoc -I $(VENDOR_PROTO_PATH) --proto_path=$(CURDIR) \
 	--openapiv2_out=. --openapiv2_opt logtostderr=true --openapiv2_opt generate_unbound_methods=true \
 	$(PROTO_PATH)/$(SERVICE_NAME)/service.proto
-.PHONY: protoc-generate
+
+buf-generate: ### Generate code from .proto using buf
+	buf --template=$(BUF_GEN_FILE) generate
+.PHONY: buf-generate
 
 proto-generate: protoc-generate tidy
 .PHONY: proto-generate

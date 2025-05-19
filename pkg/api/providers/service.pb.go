@@ -7,6 +7,8 @@
 package providers
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -24,12 +26,13 @@ var File_api_providers_service_proto protoreflect.FileDescriptor
 
 const file_api_providers_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1bapi/providers/service.proto\x12+github.com.classydevv.fulfillment.providers\x1a\x1capi/providers/messages.proto2\x8d\x05\n" +
+	"\x1bapi/providers/service.proto\x12+github.com.classydevv.fulfillment.providers\x1a\x1capi/providers/messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto2\x8d\x05\n" +
 	"\x10ProvidersService\x12\x9b\x01\n" +
 	"\x0eProviderCreate\x12B.github.com.classydevv.fulfillment.providers.ProviderCreateRequest\x1aC.github.com.classydevv.fulfillment.providers.ProviderCreateResponse\"\x00\x12\x9e\x01\n" +
 	"\x0fProviderListAll\x12C.github.com.classydevv.fulfillment.providers.ProviderListAllRequest\x1aD.github.com.classydevv.fulfillment.providers.ProviderListAllResponse\"\x00\x12\x9b\x01\n" +
 	"\x0eProviderUpdate\x12B.github.com.classydevv.fulfillment.providers.ProviderUpdateRequest\x1aC.github.com.classydevv.fulfillment.providers.ProviderUpdateResponse\"\x00\x12\x9b\x01\n" +
-	"\x0eProviderDelete\x12B.github.com.classydevv.fulfillment.providers.ProviderDeleteRequest\x1aC.github.com.classydevv.fulfillment.providers.ProviderDeleteResponse\"\x00B5Z3github.com/classydevv/fulfillment/pkg/api/providersb\x06proto3"
+	"\x0eProviderDelete\x12B.github.com.classydevv.fulfillment.providers.ProviderDeleteRequest\x1aC.github.com.classydevv.fulfillment.providers.ProviderDeleteResponse\"\x00B\xb7\x01\x92A\x7f\x12y\n" +
+	"\fProvider API\x12dService to manager all provider related data: delivery zones and slots, pickup points, tariffs, etc.2\x031.0*\x02\x01\x02Z3github.com/classydevv/fulfillment/pkg/api/providersb\x06proto3"
 
 var file_api_providers_service_proto_goTypes = []any{
 	(*ProviderCreateRequest)(nil),   // 0: github.com.classydevv.fulfillment.providers.ProviderCreateRequest
