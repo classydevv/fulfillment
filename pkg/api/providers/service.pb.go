@@ -26,33 +26,33 @@ var File_api_providers_service_proto protoreflect.FileDescriptor
 
 const file_api_providers_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1bapi/providers/service.proto\x12+github.com.classydevv.fulfillment.providers\x1a\x1capi/providers/messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto2\x8d\x05\n" +
-	"\x10ProvidersService\x12\x9b\x01\n" +
-	"\x0eProviderCreate\x12B.github.com.classydevv.fulfillment.providers.ProviderCreateRequest\x1aC.github.com.classydevv.fulfillment.providers.ProviderCreateResponse\"\x00\x12\x9e\x01\n" +
-	"\x0fProviderListAll\x12C.github.com.classydevv.fulfillment.providers.ProviderListAllRequest\x1aD.github.com.classydevv.fulfillment.providers.ProviderListAllResponse\"\x00\x12\x9b\x01\n" +
-	"\x0eProviderUpdate\x12B.github.com.classydevv.fulfillment.providers.ProviderUpdateRequest\x1aC.github.com.classydevv.fulfillment.providers.ProviderUpdateResponse\"\x00\x12\x9b\x01\n" +
-	"\x0eProviderDelete\x12B.github.com.classydevv.fulfillment.providers.ProviderDeleteRequest\x1aC.github.com.classydevv.fulfillment.providers.ProviderDeleteResponse\"\x00B\xb7\x01\x92A\x7f\x12y\n" +
-	"\fProvider API\x12dService to manager all provider related data: delivery zones and slots, pickup points, tariffs, etc.2\x031.0*\x02\x01\x02Z3github.com/classydevv/fulfillment/pkg/api/providersb\x06proto3"
+	"\x1bapi/providers/service.proto\x12.github.com.classydevv.fulfillment.providers.v1\x1a\x1capi/providers/messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto2\x9b\x06\n" +
+	"\x10ProvidersService\x12\xb9\x01\n" +
+	"\x0eProviderCreate\x12E.github.com.classydevv.fulfillment.providers.v1.ProviderCreateRequest\x1aF.github.com.classydevv.fulfillment.providers.v1.ProviderCreateResponse\"\x18\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/providers\x12\xb9\x01\n" +
+	"\x0fProviderListAll\x12F.github.com.classydevv.fulfillment.providers.v1.ProviderListAllRequest\x1aG.github.com.classydevv.fulfillment.providers.v1.ProviderListAllResponse\"\x15\x82\xd3\xe4\x93\x02\x0f\x12\r/v1/providers\x12\xc7\x01\n" +
+	"\x0eProviderUpdate\x12E.github.com.classydevv.fulfillment.providers.v1.ProviderUpdateRequest\x1aF.github.com.classydevv.fulfillment.providers.v1.ProviderUpdateResponse\"&\x82\xd3\xe4\x93\x02 :\x01*\x1a\x1b/v1/providers/{provider_id}\x12\xc4\x01\n" +
+	"\x0eProviderDelete\x12E.github.com.classydevv.fulfillment.providers.v1.ProviderDeleteRequest\x1aF.github.com.classydevv.fulfillment.providers.v1.ProviderDeleteResponse\"#\x82\xd3\xe4\x93\x02\x1d*\x1b/v1/providers/{provider_id}B\xc4\x01\x92A\x7f\x12y\n" +
+	"\fProvider API\x12dService to manager all provider related data: delivery zones and slots, pickup points, tariffs, etc.2\x031.0*\x02\x01\x02Z@github.com/classydevv/fulfillment/pkg/api/providers/v1;providersb\x06proto3"
 
 var file_api_providers_service_proto_goTypes = []any{
-	(*ProviderCreateRequest)(nil),   // 0: github.com.classydevv.fulfillment.providers.ProviderCreateRequest
-	(*ProviderListAllRequest)(nil),  // 1: github.com.classydevv.fulfillment.providers.ProviderListAllRequest
-	(*ProviderUpdateRequest)(nil),   // 2: github.com.classydevv.fulfillment.providers.ProviderUpdateRequest
-	(*ProviderDeleteRequest)(nil),   // 3: github.com.classydevv.fulfillment.providers.ProviderDeleteRequest
-	(*ProviderCreateResponse)(nil),  // 4: github.com.classydevv.fulfillment.providers.ProviderCreateResponse
-	(*ProviderListAllResponse)(nil), // 5: github.com.classydevv.fulfillment.providers.ProviderListAllResponse
-	(*ProviderUpdateResponse)(nil),  // 6: github.com.classydevv.fulfillment.providers.ProviderUpdateResponse
-	(*ProviderDeleteResponse)(nil),  // 7: github.com.classydevv.fulfillment.providers.ProviderDeleteResponse
+	(*ProviderCreateRequest)(nil),   // 0: github.com.classydevv.fulfillment.providers.v1.ProviderCreateRequest
+	(*ProviderListAllRequest)(nil),  // 1: github.com.classydevv.fulfillment.providers.v1.ProviderListAllRequest
+	(*ProviderUpdateRequest)(nil),   // 2: github.com.classydevv.fulfillment.providers.v1.ProviderUpdateRequest
+	(*ProviderDeleteRequest)(nil),   // 3: github.com.classydevv.fulfillment.providers.v1.ProviderDeleteRequest
+	(*ProviderCreateResponse)(nil),  // 4: github.com.classydevv.fulfillment.providers.v1.ProviderCreateResponse
+	(*ProviderListAllResponse)(nil), // 5: github.com.classydevv.fulfillment.providers.v1.ProviderListAllResponse
+	(*ProviderUpdateResponse)(nil),  // 6: github.com.classydevv.fulfillment.providers.v1.ProviderUpdateResponse
+	(*ProviderDeleteResponse)(nil),  // 7: github.com.classydevv.fulfillment.providers.v1.ProviderDeleteResponse
 }
 var file_api_providers_service_proto_depIdxs = []int32{
-	0, // 0: github.com.classydevv.fulfillment.providers.ProvidersService.ProviderCreate:input_type -> github.com.classydevv.fulfillment.providers.ProviderCreateRequest
-	1, // 1: github.com.classydevv.fulfillment.providers.ProvidersService.ProviderListAll:input_type -> github.com.classydevv.fulfillment.providers.ProviderListAllRequest
-	2, // 2: github.com.classydevv.fulfillment.providers.ProvidersService.ProviderUpdate:input_type -> github.com.classydevv.fulfillment.providers.ProviderUpdateRequest
-	3, // 3: github.com.classydevv.fulfillment.providers.ProvidersService.ProviderDelete:input_type -> github.com.classydevv.fulfillment.providers.ProviderDeleteRequest
-	4, // 4: github.com.classydevv.fulfillment.providers.ProvidersService.ProviderCreate:output_type -> github.com.classydevv.fulfillment.providers.ProviderCreateResponse
-	5, // 5: github.com.classydevv.fulfillment.providers.ProvidersService.ProviderListAll:output_type -> github.com.classydevv.fulfillment.providers.ProviderListAllResponse
-	6, // 6: github.com.classydevv.fulfillment.providers.ProvidersService.ProviderUpdate:output_type -> github.com.classydevv.fulfillment.providers.ProviderUpdateResponse
-	7, // 7: github.com.classydevv.fulfillment.providers.ProvidersService.ProviderDelete:output_type -> github.com.classydevv.fulfillment.providers.ProviderDeleteResponse
+	0, // 0: github.com.classydevv.fulfillment.providers.v1.ProvidersService.ProviderCreate:input_type -> github.com.classydevv.fulfillment.providers.v1.ProviderCreateRequest
+	1, // 1: github.com.classydevv.fulfillment.providers.v1.ProvidersService.ProviderListAll:input_type -> github.com.classydevv.fulfillment.providers.v1.ProviderListAllRequest
+	2, // 2: github.com.classydevv.fulfillment.providers.v1.ProvidersService.ProviderUpdate:input_type -> github.com.classydevv.fulfillment.providers.v1.ProviderUpdateRequest
+	3, // 3: github.com.classydevv.fulfillment.providers.v1.ProvidersService.ProviderDelete:input_type -> github.com.classydevv.fulfillment.providers.v1.ProviderDeleteRequest
+	4, // 4: github.com.classydevv.fulfillment.providers.v1.ProvidersService.ProviderCreate:output_type -> github.com.classydevv.fulfillment.providers.v1.ProviderCreateResponse
+	5, // 5: github.com.classydevv.fulfillment.providers.v1.ProvidersService.ProviderListAll:output_type -> github.com.classydevv.fulfillment.providers.v1.ProviderListAllResponse
+	6, // 6: github.com.classydevv.fulfillment.providers.v1.ProvidersService.ProviderUpdate:output_type -> github.com.classydevv.fulfillment.providers.v1.ProviderUpdateResponse
+	7, // 7: github.com.classydevv.fulfillment.providers.v1.ProvidersService.ProviderDelete:output_type -> github.com.classydevv.fulfillment.providers.v1.ProviderDeleteResponse
 	4, // [4:8] is the sub-list for method output_type
 	0, // [0:4] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name

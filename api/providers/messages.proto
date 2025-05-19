@@ -1,8 +1,13 @@
 syntax = "proto3";
 
-package github.com.classydevv.fulfillment.providers;
+package github.com.classydevv.fulfillment.providers.v1;
 
-option go_package = "github.com/classydevv/fulfillment/pkg/api/providers";
+// import "buf/validate/validate.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/timestamp.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/classydevv/fulfillment/pkg/api/providers/v1;providers";
 
 message Provider {
     string provider_id = 1 [json_name = "provider_id"];
@@ -10,11 +15,23 @@ message Provider {
 }
 
 message ProviderCreateRequest {
-    string provider_id = 1 [json_name = "provider_id"];
-    string name = 2 [json_name = "name"];
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+        json_schema: {
+          title: "ProviderCreateRequest"
+          description: "Creates a new delivery provider"
+          required: ["provider_id", "name"]
+        }
+      };
+    string provider_id = 1 [json_name = "provider_id", (google.api.field_behavior) = REQUIRED];
+    string name = 2 [json_name = "name", (google.api.field_behavior) = REQUIRED];
 }
 
 message ProviderCreateResponse {
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+        json_schema: {
+          title: "ProviderCreateResponse"
+        }
+      };
     string provider_id = 1 [json_name = "provider_id"];
 }
 

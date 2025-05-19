@@ -6,6 +6,7 @@ import (
 
 	"github.com/classydevv/fulfillment/internal/providers/entity"
 	"github.com/classydevv/fulfillment/internal/providers/usecase"
+
 	pb "github.com/classydevv/fulfillment/pkg/api/providers"
 	"github.com/classydevv/fulfillment/pkg/grpcserver"
 	"github.com/classydevv/fulfillment/pkg/logger"
@@ -98,8 +99,8 @@ func (c *controllerProvider) ProviderListAll(ctx context.Context, _ *pb.Provider
 
 	for i, provider := range providersEntity {
 		providers[i] = &pb.Provider{
-			ProviderId:   string(provider.ProviderId),
-			Name: provider.Name,
+			ProviderId: string(provider.ProviderId),
+			Name:       provider.Name,
 		}
 	}
 
@@ -129,7 +130,7 @@ func (c *controllerProvider) ProviderUpdate(ctx context.Context, req *pb.Provide
 	return &pb.ProviderUpdateResponse{
 		Provider: &pb.Provider{
 			ProviderId: string(providerUpdated.ProviderId),
-			Name: providerUpdated.Name,
+			Name:       providerUpdated.Name,
 		},
 	}, nil
 }

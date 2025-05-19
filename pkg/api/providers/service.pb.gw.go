@@ -64,9 +64,7 @@ func request_ProvidersService_ProviderListAll_0(ctx context.Context, marshaler r
 		protoReq ProviderListAllRequest
 		metadata runtime.ServerMetadata
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
+	io.Copy(io.Discard, req.Body)
 	msg, err := client.ProviderListAll(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
@@ -76,9 +74,6 @@ func local_request_ProvidersService_ProviderListAll_0(ctx context.Context, marsh
 		protoReq ProviderListAllRequest
 		metadata runtime.ServerMetadata
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
 	msg, err := server.ProviderListAll(ctx, &protoReq)
 	return msg, metadata, err
 }
@@ -87,9 +82,18 @@ func request_ProvidersService_ProviderUpdate_0(ctx context.Context, marshaler ru
 	var (
 		protoReq ProviderUpdateRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	val, ok := pathParams["provider_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "provider_id")
+	}
+	protoReq.ProviderId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "provider_id", err)
 	}
 	msg, err := client.ProviderUpdate(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -99,9 +103,18 @@ func local_request_ProvidersService_ProviderUpdate_0(ctx context.Context, marsha
 	var (
 		protoReq ProviderUpdateRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	val, ok := pathParams["provider_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "provider_id")
+	}
+	protoReq.ProviderId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "provider_id", err)
 	}
 	msg, err := server.ProviderUpdate(ctx, &protoReq)
 	return msg, metadata, err
@@ -111,9 +124,16 @@ func request_ProvidersService_ProviderDelete_0(ctx context.Context, marshaler ru
 	var (
 		protoReq ProviderDeleteRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	io.Copy(io.Discard, req.Body)
+	val, ok := pathParams["provider_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "provider_id")
+	}
+	protoReq.ProviderId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "provider_id", err)
 	}
 	msg, err := client.ProviderDelete(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -123,9 +143,15 @@ func local_request_ProvidersService_ProviderDelete_0(ctx context.Context, marsha
 	var (
 		protoReq ProviderDeleteRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok := pathParams["provider_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "provider_id")
+	}
+	protoReq.ProviderId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "provider_id", err)
 	}
 	msg, err := server.ProviderDelete(ctx, &protoReq)
 	return msg, metadata, err
@@ -143,7 +169,7 @@ func RegisterProvidersServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderCreate", runtime.WithHTTPPathPattern("/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderCreate"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.classydevv.fulfillment.providers.v1.ProvidersService/ProviderCreate", runtime.WithHTTPPathPattern("/v1/providers"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -157,13 +183,13 @@ func RegisterProvidersServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		}
 		forward_ProvidersService_ProviderCreate_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_ProvidersService_ProviderListAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_ProvidersService_ProviderListAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderListAll", runtime.WithHTTPPathPattern("/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderListAll"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.classydevv.fulfillment.providers.v1.ProvidersService/ProviderListAll", runtime.WithHTTPPathPattern("/v1/providers"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -177,13 +203,13 @@ func RegisterProvidersServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		}
 		forward_ProvidersService_ProviderListAll_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_ProvidersService_ProviderUpdate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPut, pattern_ProvidersService_ProviderUpdate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderUpdate", runtime.WithHTTPPathPattern("/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderUpdate"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.classydevv.fulfillment.providers.v1.ProvidersService/ProviderUpdate", runtime.WithHTTPPathPattern("/v1/providers/{provider_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -197,13 +223,13 @@ func RegisterProvidersServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		}
 		forward_ProvidersService_ProviderUpdate_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_ProvidersService_ProviderDelete_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodDelete, pattern_ProvidersService_ProviderDelete_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderDelete", runtime.WithHTTPPathPattern("/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderDelete"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.classydevv.fulfillment.providers.v1.ProvidersService/ProviderDelete", runtime.WithHTTPPathPattern("/v1/providers/{provider_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -261,7 +287,7 @@ func RegisterProvidersServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderCreate", runtime.WithHTTPPathPattern("/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderCreate"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.classydevv.fulfillment.providers.v1.ProvidersService/ProviderCreate", runtime.WithHTTPPathPattern("/v1/providers"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -274,11 +300,11 @@ func RegisterProvidersServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		}
 		forward_ProvidersService_ProviderCreate_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_ProvidersService_ProviderListAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_ProvidersService_ProviderListAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderListAll", runtime.WithHTTPPathPattern("/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderListAll"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.classydevv.fulfillment.providers.v1.ProvidersService/ProviderListAll", runtime.WithHTTPPathPattern("/v1/providers"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -291,11 +317,11 @@ func RegisterProvidersServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		}
 		forward_ProvidersService_ProviderListAll_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_ProvidersService_ProviderUpdate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPut, pattern_ProvidersService_ProviderUpdate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderUpdate", runtime.WithHTTPPathPattern("/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderUpdate"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.classydevv.fulfillment.providers.v1.ProvidersService/ProviderUpdate", runtime.WithHTTPPathPattern("/v1/providers/{provider_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -308,11 +334,11 @@ func RegisterProvidersServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		}
 		forward_ProvidersService_ProviderUpdate_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_ProvidersService_ProviderDelete_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodDelete, pattern_ProvidersService_ProviderDelete_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderDelete", runtime.WithHTTPPathPattern("/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderDelete"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.classydevv.fulfillment.providers.v1.ProvidersService/ProviderDelete", runtime.WithHTTPPathPattern("/v1/providers/{provider_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -329,10 +355,10 @@ func RegisterProvidersServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 }
 
 var (
-	pattern_ProvidersService_ProviderCreate_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.classydevv.fulfillment.providers.ProvidersService", "ProviderCreate"}, ""))
-	pattern_ProvidersService_ProviderListAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.classydevv.fulfillment.providers.ProvidersService", "ProviderListAll"}, ""))
-	pattern_ProvidersService_ProviderUpdate_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.classydevv.fulfillment.providers.ProvidersService", "ProviderUpdate"}, ""))
-	pattern_ProvidersService_ProviderDelete_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.classydevv.fulfillment.providers.ProvidersService", "ProviderDelete"}, ""))
+	pattern_ProvidersService_ProviderCreate_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "providers"}, ""))
+	pattern_ProvidersService_ProviderListAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "providers"}, ""))
+	pattern_ProvidersService_ProviderUpdate_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "providers", "provider_id"}, ""))
+	pattern_ProvidersService_ProviderDelete_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "providers", "provider_id"}, ""))
 )
 
 var (

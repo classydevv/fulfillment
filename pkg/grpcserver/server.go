@@ -13,14 +13,14 @@ import (
 type Server struct {
 	GRPC struct {
 		Address string
-		Server *grpc.Server
+		Server  *grpc.Server
 	}
 	Gateway struct {
 		Address string
-		Server *http.Server
-		Mux *runtime.ServeMux
+		Server  *http.Server
+		Mux     *runtime.ServeMux
 	}
-	notify         chan error
+	notify chan error
 }
 
 func New(ctx context.Context, opts ...Option) *Server {

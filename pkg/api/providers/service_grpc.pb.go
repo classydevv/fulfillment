@@ -19,19 +19,25 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ProvidersService_ProviderCreate_FullMethodName  = "/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderCreate"
-	ProvidersService_ProviderListAll_FullMethodName = "/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderListAll"
-	ProvidersService_ProviderUpdate_FullMethodName  = "/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderUpdate"
-	ProvidersService_ProviderDelete_FullMethodName  = "/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderDelete"
+	ProvidersService_ProviderCreate_FullMethodName  = "/github.com.classydevv.fulfillment.providers.v1.ProvidersService/ProviderCreate"
+	ProvidersService_ProviderListAll_FullMethodName = "/github.com.classydevv.fulfillment.providers.v1.ProvidersService/ProviderListAll"
+	ProvidersService_ProviderUpdate_FullMethodName  = "/github.com.classydevv.fulfillment.providers.v1.ProvidersService/ProviderUpdate"
+	ProvidersService_ProviderDelete_FullMethodName  = "/github.com.classydevv.fulfillment.providers.v1.ProvidersService/ProviderDelete"
 )
 
 // ProvidersServiceClient is the client API for ProvidersService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// Service is resposible for CRUD of providers
 type ProvidersServiceClient interface {
+	// Create a provider
 	ProviderCreate(ctx context.Context, in *ProviderCreateRequest, opts ...grpc.CallOption) (*ProviderCreateResponse, error)
+	// List all providers
 	ProviderListAll(ctx context.Context, in *ProviderListAllRequest, opts ...grpc.CallOption) (*ProviderListAllResponse, error)
+	// Update a provider
 	ProviderUpdate(ctx context.Context, in *ProviderUpdateRequest, opts ...grpc.CallOption) (*ProviderUpdateResponse, error)
+	// Delete a provider
 	ProviderDelete(ctx context.Context, in *ProviderDeleteRequest, opts ...grpc.CallOption) (*ProviderDeleteResponse, error)
 }
 
@@ -86,10 +92,16 @@ func (c *providersServiceClient) ProviderDelete(ctx context.Context, in *Provide
 // ProvidersServiceServer is the server API for ProvidersService service.
 // All implementations must embed UnimplementedProvidersServiceServer
 // for forward compatibility.
+//
+// Service is resposible for CRUD of providers
 type ProvidersServiceServer interface {
+	// Create a provider
 	ProviderCreate(context.Context, *ProviderCreateRequest) (*ProviderCreateResponse, error)
+	// List all providers
 	ProviderListAll(context.Context, *ProviderListAllRequest) (*ProviderListAllResponse, error)
+	// Update a provider
 	ProviderUpdate(context.Context, *ProviderUpdateRequest) (*ProviderUpdateResponse, error)
+	// Delete a provider
 	ProviderDelete(context.Context, *ProviderDeleteRequest) (*ProviderDeleteResponse, error)
 	mustEmbedUnimplementedProvidersServiceServer()
 }
@@ -210,7 +222,7 @@ func _ProvidersService_ProviderDelete_Handler(srv interface{}, ctx context.Conte
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ProvidersService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "github.com.classydevv.fulfillment.providers.ProvidersService",
+	ServiceName: "github.com.classydevv.fulfillment.providers.v1.ProvidersService",
 	HandlerType: (*ProvidersServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

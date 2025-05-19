@@ -1,0 +1,10 @@
+version: v2
+lint:
+  use:
+    - STANDARD
+    - UNARY_RPC
+  disallow_comment_ignores: true
+breaking:
+  use:
+    - WIRE_JSON
+  ignore_unstable_packages: true

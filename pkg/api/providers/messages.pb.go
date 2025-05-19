@@ -7,8 +7,11 @@
 package providers
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	_ "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -429,26 +432,28 @@ var File_api_providers_messages_proto protoreflect.FileDescriptor
 
 const file_api_providers_messages_proto_rawDesc = "" +
 	"\n" +
-	"\x1capi/providers/messages.proto\x12+github.com.classydevv.fulfillment.providers\"@\n" +
+	"\x1capi/providers/messages.proto\x12.github.com.classydevv.fulfillment.providers.v1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"@\n" +
 	"\bProvider\x12 \n" +
 	"\vprovider_id\x18\x01 \x01(\tR\vprovider_id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"M\n" +
-	"\x15ProviderCreateRequest\x12 \n" +
-	"\vprovider_id\x18\x01 \x01(\tR\vprovider_id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\":\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\"\xab\x01\n" +
+	"\x15ProviderCreateRequest\x12%\n" +
+	"\vprovider_id\x18\x01 \x01(\tB\x03\xe0A\x02R\vprovider_id\x12\x17\n" +
+	"\x04name\x18\x02 \x01(\tB\x03\xe0A\x02R\x04name:R\x92AO\n" +
+	"M*\x15ProviderCreateRequest2\x1fCreates a new delivery provider\xd2\x01\vprovider_id\xd2\x01\x04name\"Y\n" +
 	"\x16ProviderCreateResponse\x12 \n" +
-	"\vprovider_id\x18\x01 \x01(\tR\vprovider_id\"\x18\n" +
-	"\x16ProviderListAllRequest\"n\n" +
-	"\x17ProviderListAllResponse\x12S\n" +
-	"\tproviders\x18\x01 \x03(\v25.github.com.classydevv.fulfillment.providers.ProviderR\tproviders\"M\n" +
+	"\vprovider_id\x18\x01 \x01(\tR\vprovider_id:\x1d\x92A\x1a\n" +
+	"\x18*\x16ProviderCreateResponse\"\x18\n" +
+	"\x16ProviderListAllRequest\"q\n" +
+	"\x17ProviderListAllResponse\x12V\n" +
+	"\tproviders\x18\x01 \x03(\v28.github.com.classydevv.fulfillment.providers.v1.ProviderR\tproviders\"M\n" +
 	"\x15ProviderUpdateRequest\x12 \n" +
 	"\vprovider_id\x18\x01 \x01(\tR\vprovider_id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"k\n" +
-	"\x16ProviderUpdateResponse\x12Q\n" +
-	"\bprovider\x18\x01 \x01(\v25.github.com.classydevv.fulfillment.providers.ProviderR\bprovider\"9\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\"n\n" +
+	"\x16ProviderUpdateResponse\x12T\n" +
+	"\bprovider\x18\x01 \x01(\v28.github.com.classydevv.fulfillment.providers.v1.ProviderR\bprovider\"9\n" +
 	"\x15ProviderDeleteRequest\x12 \n" +
 	"\vprovider_id\x18\x01 \x01(\tR\vprovider_id\"\x18\n" +
-	"\x16ProviderDeleteResponseB5Z3github.com/classydevv/fulfillment/pkg/api/providersb\x06proto3"
+	"\x16ProviderDeleteResponseBBZ@github.com/classydevv/fulfillment/pkg/api/providers/v1;providersb\x06proto3"
 
 var (
 	file_api_providers_messages_proto_rawDescOnce sync.Once
@@ -464,19 +469,19 @@ func file_api_providers_messages_proto_rawDescGZIP() []byte {
 
 var file_api_providers_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_api_providers_messages_proto_goTypes = []any{
-	(*Provider)(nil),                // 0: github.com.classydevv.fulfillment.providers.Provider
-	(*ProviderCreateRequest)(nil),   // 1: github.com.classydevv.fulfillment.providers.ProviderCreateRequest
-	(*ProviderCreateResponse)(nil),  // 2: github.com.classydevv.fulfillment.providers.ProviderCreateResponse
-	(*ProviderListAllRequest)(nil),  // 3: github.com.classydevv.fulfillment.providers.ProviderListAllRequest
-	(*ProviderListAllResponse)(nil), // 4: github.com.classydevv.fulfillment.providers.ProviderListAllResponse
-	(*ProviderUpdateRequest)(nil),   // 5: github.com.classydevv.fulfillment.providers.ProviderUpdateRequest
-	(*ProviderUpdateResponse)(nil),  // 6: github.com.classydevv.fulfillment.providers.ProviderUpdateResponse
-	(*ProviderDeleteRequest)(nil),   // 7: github.com.classydevv.fulfillment.providers.ProviderDeleteRequest
-	(*ProviderDeleteResponse)(nil),  // 8: github.com.classydevv.fulfillment.providers.ProviderDeleteResponse
+	(*Provider)(nil),                // 0: github.com.classydevv.fulfillment.providers.v1.Provider
+	(*ProviderCreateRequest)(nil),   // 1: github.com.classydevv.fulfillment.providers.v1.ProviderCreateRequest
+	(*ProviderCreateResponse)(nil),  // 2: github.com.classydevv.fulfillment.providers.v1.ProviderCreateResponse
+	(*ProviderListAllRequest)(nil),  // 3: github.com.classydevv.fulfillment.providers.v1.ProviderListAllRequest
+	(*ProviderListAllResponse)(nil), // 4: github.com.classydevv.fulfillment.providers.v1.ProviderListAllResponse
+	(*ProviderUpdateRequest)(nil),   // 5: github.com.classydevv.fulfillment.providers.v1.ProviderUpdateRequest
+	(*ProviderUpdateResponse)(nil),  // 6: github.com.classydevv.fulfillment.providers.v1.ProviderUpdateResponse
+	(*ProviderDeleteRequest)(nil),   // 7: github.com.classydevv.fulfillment.providers.v1.ProviderDeleteRequest
+	(*ProviderDeleteResponse)(nil),  // 8: github.com.classydevv.fulfillment.providers.v1.ProviderDeleteResponse
 }
 var file_api_providers_messages_proto_depIdxs = []int32{
-	0, // 0: github.com.classydevv.fulfillment.providers.ProviderListAllResponse.providers:type_name -> github.com.classydevv.fulfillment.providers.Provider
-	0, // 1: github.com.classydevv.fulfillment.providers.ProviderUpdateResponse.provider:type_name -> github.com.classydevv.fulfillment.providers.Provider
+	0, // 0: github.com.classydevv.fulfillment.providers.v1.ProviderListAllResponse.providers:type_name -> github.com.classydevv.fulfillment.providers.v1.Provider
+	0, // 1: github.com.classydevv.fulfillment.providers.v1.ProviderUpdateResponse.provider:type_name -> github.com.classydevv.fulfillment.providers.v1.Provider
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

@@ -21,78 +21,36 @@
     "application/json"
   ],
   "paths": {
-    "/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderCreate": {
-      "post": {
-        "operationId": "ProvidersService_ProviderCreate",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/providersProviderCreateResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/providersProviderCreateRequest"
-            }
-          }
-        ],
-        "tags": [
-          "ProvidersService"
-        ]
-      }
-    },
-    "/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderDelete": {
-      "post": {
-        "operationId": "ProvidersService_ProviderDelete",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/providersProviderDeleteResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/providersProviderDeleteRequest"
-            }
-          }
-        ],
-        "tags": [
-          "ProvidersService"
-        ]
-      }
-    },
-    "/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderListAll": {
-      "post": {
+    "/v1/providers": {
+      "get": {
+        "summary": "List all providers",
         "operationId": "ProvidersService_ProviderListAll",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/providersProviderListAllResponse"
+              "$ref": "#/definitions/v1ProviderListAllResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "ProvidersService"
+        ]
+      },
+      "post": {
+        "summary": "Create a provider",
+        "operationId": "ProvidersService_ProviderCreate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ProviderCreateResponse"
             }
           },
           "default": {
@@ -105,10 +63,11 @@
         "parameters": [
           {
             "name": "body",
+            "description": "Creates a new delivery provider",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/providersProviderListAllRequest"
+              "$ref": "#/definitions/v1ProviderCreateRequest"
             }
           }
         ],
@@ -117,14 +76,15 @@
         ]
       }
     },
-    "/github.com.classydevv.fulfillment.providers.ProvidersService/ProviderUpdate": {
-      "post": {
-        "operationId": "ProvidersService_ProviderUpdate",
+    "/v1/providers/{provider_id}": {
+      "delete": {
+        "summary": "Delete a provider",
+        "operationId": "ProvidersService_ProviderDelete",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/providersProviderUpdateResponse"
+              "$ref": "#/definitions/v1ProviderDeleteResponse"
             }
           },
           "default": {
@@ -136,11 +96,46 @@
         },
         "parameters": [
           {
+            "name": "provider_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ProvidersService"
+        ]
+      },
+      "put": {
+        "summary": "Update a provider",
+        "operationId": "ProvidersService_ProviderUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ProviderUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "provider_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "body",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/providersProviderUpdateRequest"
+              "$ref": "#/definitions/ProvidersServiceProviderUpdateBody"
             }
           }
         ],
@@ -151,6 +146,14 @@
     }
   },
   "definitions": {
+    "ProvidersServiceProviderUpdateBody": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -159,81 +162,6 @@
         }
       },
       "additionalProperties": {}
-    },
-    "providersProvider": {
-      "type": "object",
-      "properties": {
-        "provider_id": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        }
-      }
-    },
-    "providersProviderCreateRequest": {
-      "type": "object",
-      "properties": {
-        "provider_id": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        }
-      }
-    },
-    "providersProviderCreateResponse": {
-      "type": "object",
-      "properties": {
-        "provider_id": {
-          "type": "string"
-        }
-      }
-    },
-    "providersProviderDeleteRequest": {
-      "type": "object",
-      "properties": {
-        "provider_id": {
-          "type": "string"
-        }
-      }
-    },
-    "providersProviderDeleteResponse": {
-      "type": "object"
-    },
-    "providersProviderListAllRequest": {
-      "type": "object"
-    },
-    "providersProviderListAllResponse": {
-      "type": "object",
-      "properties": {
-        "providers": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/providersProvider"
-          }
-        }
-      }
-    },
-    "providersProviderUpdateRequest": {
-      "type": "object",
-      "properties": {
-        "provider_id": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        }
-      }
-    },
-    "providersProviderUpdateResponse": {
-      "type": "object",
-      "properties": {
-        "provider": {
-          "$ref": "#/definitions/providersProvider"
-        }
-      }
     },
     "rpcStatus": {
       "type": "object",
@@ -251,6 +179,66 @@
             "type": "object",
             "$ref": "#/definitions/protobufAny"
           }
+        }
+      }
+    },
+    "v1Provider": {
+      "type": "object",
+      "properties": {
+        "provider_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "v1ProviderCreateRequest": {
+      "type": "object",
+      "properties": {
+        "provider_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "description": "Creates a new delivery provider",
+      "title": "ProviderCreateRequest",
+      "required": [
+        "provider_id",
+        "name"
+      ]
+    },
+    "v1ProviderCreateResponse": {
+      "type": "object",
+      "properties": {
+        "provider_id": {
+          "type": "string"
+        }
+      },
+      "title": "ProviderCreateResponse"
+    },
+    "v1ProviderDeleteResponse": {
+      "type": "object"
+    },
+    "v1ProviderListAllResponse": {
+      "type": "object",
+      "properties": {
+        "providers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Provider"
+          }
+        }
+      }
+    },
+    "v1ProviderUpdateResponse": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "$ref": "#/definitions/v1Provider"
         }
       }
     }

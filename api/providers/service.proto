@@ -1,12 +1,12 @@
 syntax = "proto3";
 
-package github.com.classydevv.fulfillment.providers;
+package github.com.classydevv.fulfillment.providers.v1;
 
 import "api/providers/messages.proto";
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
-option go_package = "github.com/classydevv/fulfillment/pkg/api/providers";
+option go_package = "github.com/classydevv/fulfillment/pkg/api/providers/v1;providers";
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     info: {
       title: "Provider API";
@@ -17,9 +17,32 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     schemes: HTTPS;
 };
 
+// Service is resposible for CRUD of providers
 service ProvidersService {
-    rpc ProviderCreate(ProviderCreateRequest) returns (ProviderCreateResponse) {}
-    rpc ProviderListAll(ProviderListAllRequest) returns (ProviderListAllResponse) {}
-    rpc ProviderUpdate(ProviderUpdateRequest) returns (ProviderUpdateResponse) {}
-    rpc ProviderDelete(ProviderDeleteRequest) returns (ProviderDeleteResponse) {}
+    // Create a provider
+    rpc ProviderCreate(ProviderCreateRequest) returns (ProviderCreateResponse) {
+      option (google.api.http) = {
+        post: "/v1/providers"
+        body: "*"
+      };
+    }
+    // List all providers
+    rpc ProviderListAll(ProviderListAllRequest) returns (ProviderListAllResponse) {
+      option (google.api.http) = {
+        get: "/v1/providers"
+      };
+    }
+    // Update a provider
+    rpc ProviderUpdate(ProviderUpdateRequest) returns (ProviderUpdateResponse) {
+      option (google.api.http) = {
+        put: "/v1/providers/{provider_id}"
+        body: "*"
+      };
+    }
+    // Delete a provider
+    rpc ProviderDelete(ProviderDeleteRequest) returns (ProviderDeleteResponse) {
+      option (google.api.http) = {
+        delete: "/v1/providers/{provider_id}"
+      };
+    }
 }

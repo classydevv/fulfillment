@@ -15,6 +15,7 @@ import (
 )
 
 // Swagger spec:
+//
 //	@title			Provider API
 //	@description	Service to manager all provider related data: delivery zones and slots, pickup points, tariffs, etc.
 //	@version		1.0
