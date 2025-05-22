@@ -63,7 +63,7 @@ func Run(cfg *config.Config) {
 	grpcServer.Run()
 
 	// Wait for errors
-	interrupt := make(chan os.Signal, 10)
+	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)
 
 	select {
