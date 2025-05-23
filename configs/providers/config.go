@@ -8,12 +8,17 @@ import (
 
 type (
 	Config struct {
+		App     App
 		GRPC    GRPC
 		HTTP    HTTP
 		PG      PG
 		Log     Log
 		Metrics Metrics
 		Swagger Swagger
+	}
+
+	App struct {
+		Env string `env:"APP_ENV,required"`
 	}
 
 	GRPC struct {
