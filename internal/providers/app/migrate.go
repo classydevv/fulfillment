@@ -21,9 +21,11 @@ const (
 
 func init() {
 	// Load .env for local deploy. Assumes that the file is called .env
-	loadErr := godotenv.Load()
-	if loadErr != nil {
-		log.Fatal("Error loading .env file")
+	if os.Getenv("APP_ENV") != "production" {
+		err := godotenv.Load()
+		if err != nil {
+			log.Fatal("Error loading .env file")
+		}
 	}
 	databaseURL, ok := os.LookupEnv("PG_URL")
 	if !ok || len(databaseURL) == 0 {
