@@ -12,7 +12,38 @@ x-pgadmin-environment: &x-pgadmin-environment
   PGADMIN_CONFIG_SERVER_MODE: 'False'
   PGADMIN_PORT: "5050"
 
+x-redis-environment: &x-redis-environment
+  REDIS_PASSWORD: "2gRTsdg244!#wvDTG8"
+  REDIS_PORT: "6379"
+
+x-kafka-environment: &x-kafka-environment
+  EXPOSE_PORT: "9092"
+  KAFKA_NODE_ID: 1
+  KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,DOCKER:PLAINTEXT,HOST:PLAINTEXT'
+  KAFKA_ADVERTISED_LISTENERS: 'HOST://localhost:9092,DOCKER://broker:19092'
+  KAFKA_PROCESS_ROLES: 'broker,controller'
+  KAFKA_CONTROLLER_QUORUM_VOTERS: '1@broker:29093'
+  KAFKA_LISTENERS: 'CONTROLLER://:29093,HOST://:9092,DOCKER://:19092'
+  KAFKA_INTER_BROKER_LISTENER_NAME: 'DOCKER'
+  KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+  KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+  KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+  KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+  KAFKA_SHARE_COORDINATOR_STATE_TOPIC_REPLICATION_FACTOR: 1
+  KAFKA_SHARE_COORDINATOR_STATE_TOPIC_MIN_ISR: 1
+  KAFKA_NUM_PARTITIONS: 3
+  # KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+
+x-kafka-ui-environment: &x-kafka-ui-environment
+  SERVER_PORT: "9090"
+  DYNAMIC_CONFIG_ENABLED: 'true'
+  KAFKA_CLUSTERS_0_NAME: local
+  KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: broker:19092
+
 x-providers-app-environment: &x-providers-app-environment
+  # ENV
+  APP_ENV: "production"
   # HTTP
   HTTP_PORT: "8080"
   # GRPC
@@ -24,7 +55,7 @@ x-providers-app-environment: &x-providers-app-environment
   PG_URL: "postgres://user:GY34G6TH@!3fghF45@db:5432/providers"
 
 
-services:
+services: 
   providers:
     container_name: providers
     build: 
@@ -64,7 +95,7 @@ services:
     environment:
       <<: *x-pgadmin-environment
     volumes:
-       - pgadmin:/var/lib/pgadmin
+       - pgadmin_data:/var/lib/pgadmin
     ports:
       - "${PGADMIN_PORT:-5050}:80"
     depends_on:
@@ -72,6 +103,43 @@ services:
     networks:
       app_network:
     restart: unless-stopped
+  redis:
+    container_name: redis
+    image: redis:8.0
+    environment:
+      <<: *x-redis-environment
+    # volumes:
+    #   - redis_data:/data
+    ports:
+      - "${REDIS_PORT:-6379}:${REDIS_PORT:-6379}"
+    networks:
+      app_network:
+    restart: unless-stopped
+  broker:
+    container_name: broker
+    image: apache/kafka:3.9.1
+    environment:
+      <<: *x-kafka-environment
+    # volumes:
+    #   - kafka_data:/tmp/kafka-logs
+    ports:
+      - "${EXPOSE_PORT:-9092}:${EXPOSE_PORT:-9092}"
+    networks:
+      app_network:
+    restart: unless-stopped
+  kafka-ui:
+    container_name: kafka-ui
+    image: ghcr.io/kafbat/kafka-ui:latest
+    ports:
+      - "${SERVER_PORT:-9090}:${SERVER_PORT:-9090}"
+    environment:
+      <<: *x-kafka-ui-environment
+    depends_on:
+      - broker
+    networks:
+      app_network:
+    restart: unless-stopped
+
 
 
 networks:
@@ -81,4 +149,6 @@ networks:
 
 volumes:
   providers_data:
-  pgadmin:
+  pgadmin_data:
+  # redis_data:
+  # kafka_data:
