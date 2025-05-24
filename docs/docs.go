@@ -99,7 +99,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/providers/{providerId}": {
+        "/providers/{providerID}": {
             "put": {
                 "description": "Updates a delivery provider",
                 "consumes": [
@@ -117,7 +117,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Provider ID",
-                        "name": "providerId",
+                        "name": "providerID",
                         "in": "path",
                         "required": true
                     },
@@ -175,7 +175,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Provider ID",
-                        "name": "providerId",
+                        "name": "providerID",
                         "in": "path",
                         "required": true
                     }

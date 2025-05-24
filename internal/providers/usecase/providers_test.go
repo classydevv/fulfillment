@@ -13,62 +13,69 @@ import (
 )
 
 func TestUseCaseProviders_Create(t *testing.T) {
+	t.Parallel()
+	
 	type fields struct {
 		repo *mock_repo.MockProviderRepo
 	}
+
 	type args struct {
 		ctx      context.Context
 		provider *entity.Provider
 	}
+
 	tests := []struct {
 		name    string
 		prepare func(f *fields)
 		args    args
-		want    entity.ProviderId
+		want    entity.ProviderID
 		wantErr error
 	}{
 		{
 			name: "provider created successfully",
 			prepare: func(f *fields) {
-				f.repo.EXPECT().Store(context.Background(), &entity.Provider{ProviderId: entity.ProviderId("id"), Name: "name"}).Return(nil)
+				f.repo.EXPECT().Store(context.Background(), &entity.Provider{ProviderID: entity.ProviderID("id"), Name: "name"}).Return(nil)
 			},
-			args:    args{ctx: context.Background(), provider: &entity.Provider{ProviderId: entity.ProviderId("id"), Name: "name"}},
-			want:    entity.ProviderId("id"),
+			args:    args{ctx: context.Background(), provider: &entity.Provider{ProviderID: entity.ProviderID("id"), Name: "name"}},
+			want:    entity.ProviderID("id"),
 			wantErr: nil,
 		},
 		{
 			name: "error - missing required field",
 			prepare: func(f *fields) {
-				f.repo.EXPECT().Store(context.Background(), &entity.Provider{ProviderId: entity.ProviderId("id")}).Return(entity.ErrInternalServerError)
+				f.repo.EXPECT().Store(context.Background(), &entity.Provider{ProviderID: entity.ProviderID("id")}).Return(entity.ErrInternalServerError)
 			},
-			args:    args{ctx: context.Background(), provider: &entity.Provider{ProviderId: entity.ProviderId("id")}},
-			want:    entity.ProviderId(""),
+			args:    args{ctx: context.Background(), provider: &entity.Provider{ProviderID: entity.ProviderID("id")}},
+			want:    entity.ProviderID(""),
 			wantErr: entity.ErrInternalServerError,
 		},
 		{
 			name: "error - entity already exists",
 			prepare: func(f *fields) {
-				f.repo.EXPECT().Store(context.Background(), &entity.Provider{ProviderId: entity.ProviderId("id")}).Return(entity.ErrAlreadyExists)
+				f.repo.EXPECT().Store(context.Background(), &entity.Provider{ProviderID: entity.ProviderID("id")}).Return(entity.ErrAlreadyExists)
 			},
-			args:    args{ctx: context.Background(), provider: &entity.Provider{ProviderId: entity.ProviderId("id")}},
-			want:    entity.ProviderId(""),
+			args:    args{ctx: context.Background(), provider: &entity.Provider{ProviderID: entity.ProviderID("id")}},
+			want:    entity.ProviderID(""),
 			wantErr: entity.ErrAlreadyExists,
 		},
 		{
 			name: "error - database not available",
 			prepare: func(f *fields) {
-				f.repo.EXPECT().Store(context.Background(), &entity.Provider{ProviderId: entity.ProviderId("id"), Name: "name"}).Return(entity.ErrInternalServerError)
+				f.repo.EXPECT().Store(context.Background(), &entity.Provider{ProviderID: entity.ProviderID("id"), Name: "name"}).Return(entity.ErrInternalServerError)
 			},
-			args:    args{ctx: context.Background(), provider: &entity.Provider{ProviderId: entity.ProviderId("id"), Name: "name"}},
-			want:    entity.ProviderId(""),
+			args:    args{ctx: context.Background(), provider: &entity.Provider{ProviderID: entity.ProviderID("id"), Name: "name"}},
+			want:    entity.ProviderID(""),
 			wantErr: entity.ErrInternalServerError,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
+
 			f := fields{
 				repo: mock_repo.NewMockProviderRepo(ctrl),
 			}
@@ -87,12 +94,16 @@ func TestUseCaseProviders_Create(t *testing.T) {
 }
 
 func TestUseCaseProviders_ListAll(t *testing.T) {
+	t.Parallel()
+
 	type fields struct {
 		repo *mock_repo.MockProviderRepo
 	}
+
 	type args struct {
 		ctx context.Context
 	}
+
 	tests := []struct {
 		name    string
 		prepare func(f *fields)
@@ -122,8 +133,10 @@ func TestUseCaseProviders_ListAll(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
+
 			f := fields{
 				repo: mock_repo.NewMockProviderRepo(ctrl),
 			}
@@ -142,14 +155,18 @@ func TestUseCaseProviders_ListAll(t *testing.T) {
 }
 
 func TestUseCaseProviders_Update(t *testing.T) {
+	t.Parallel()
+
 	type fields struct {
 		repo *mock_repo.MockProviderRepo
 	}
+
 	type args struct {
 		ctx      context.Context
-		id       entity.ProviderId
+		id       entity.ProviderID
 		provider *entity.Provider
 	}
+
 	tests := []struct {
 		name    string
 		prepare func(f *fields)
@@ -160,27 +177,27 @@ func TestUseCaseProviders_Update(t *testing.T) {
 		{
 			name: "provider updated successfully",
 			prepare: func(f *fields) {
-				f.repo.EXPECT().Update(context.Background(), entity.ProviderId("id"), &entity.Provider{Name: "name"}).Return(&entity.Provider{ProviderId: entity.ProviderId("id"), Name: "name"}, nil)
+				f.repo.EXPECT().Update(context.Background(), entity.ProviderID("id"), &entity.Provider{Name: "name"}).Return(&entity.Provider{ProviderID: entity.ProviderID("id"), Name: "name"}, nil)
 			},
-			args:    args{ctx: context.Background(), id: entity.ProviderId("id"), provider: &entity.Provider{Name: "name"}},
-			want:    &entity.Provider{ProviderId: entity.ProviderId("id"), Name: "name"},
+			args:    args{ctx: context.Background(), id: entity.ProviderID("id"), provider: &entity.Provider{Name: "name"}},
+			want:    &entity.Provider{ProviderID: entity.ProviderID("id"), Name: "name"},
 			wantErr: nil,
 		},
 		{
 			name: "error - provider not found",
 			prepare: func(f *fields) {
-				f.repo.EXPECT().Update(context.Background(), entity.ProviderId("id"), &entity.Provider{Name: "name"}).Return(nil, entity.ErrNotFound)
+				f.repo.EXPECT().Update(context.Background(), entity.ProviderID("id"), &entity.Provider{Name: "name"}).Return(nil, entity.ErrNotFound)
 			},
-			args:    args{ctx: context.Background(), id: entity.ProviderId("id"), provider: &entity.Provider{Name: "name"}},
+			args:    args{ctx: context.Background(), id: entity.ProviderID("id"), provider: &entity.Provider{Name: "name"}},
 			want:    nil,
 			wantErr: entity.ErrNotFound,
 		},
 		{
 			name: "error - database not available",
 			prepare: func(f *fields) {
-				f.repo.EXPECT().Update(context.Background(), entity.ProviderId("id"), &entity.Provider{Name: "name"}).Return(nil, entity.ErrInternalServerError)
+				f.repo.EXPECT().Update(context.Background(), entity.ProviderID("id"), &entity.Provider{Name: "name"}).Return(nil, entity.ErrInternalServerError)
 			},
-			args:    args{ctx: context.Background(), id: entity.ProviderId("id"), provider: &entity.Provider{Name: "name"}},
+			args:    args{ctx: context.Background(), id: entity.ProviderID("id"), provider: &entity.Provider{Name: "name"}},
 			want:    nil,
 			wantErr: entity.ErrInternalServerError,
 		},
@@ -188,8 +205,11 @@ func TestUseCaseProviders_Update(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
+
 			f := fields{
 				repo: mock_repo.NewMockProviderRepo(ctrl),
 			}
@@ -208,13 +228,17 @@ func TestUseCaseProviders_Update(t *testing.T) {
 }
 
 func TestUseCaseProviders_Delete(t *testing.T) {
+	t.Parallel()
+
 	type fields struct {
 		repo *mock_repo.MockProviderRepo
 	}
+
 	type args struct {
 		ctx context.Context
-		id  entity.ProviderId
+		id  entity.ProviderID
 	}
+
 	tests := []struct {
 		name    string
 		prepare func(f *fields)
@@ -224,33 +248,36 @@ func TestUseCaseProviders_Delete(t *testing.T) {
 		{
 			name: "provider deleted successfully",
 			prepare: func(f *fields) {
-				f.repo.EXPECT().Delete(context.Background(), entity.ProviderId("id")).Return(nil)
+				f.repo.EXPECT().Delete(context.Background(), entity.ProviderID("id")).Return(nil)
 			},
-			args:    args{ctx: context.Background(), id: entity.ProviderId("id")},
+			args:    args{ctx: context.Background(), id: entity.ProviderID("id")},
 			wantErr: nil,
 		},
 		{
 			name: "error - provider not found",
 			prepare: func(f *fields) {
-				f.repo.EXPECT().Delete(context.Background(), entity.ProviderId("id")).Return(entity.ErrNotFound)
+				f.repo.EXPECT().Delete(context.Background(), entity.ProviderID("id")).Return(entity.ErrNotFound)
 			},
-			args:    args{ctx: context.Background(), id: entity.ProviderId("id")},
+			args:    args{ctx: context.Background(), id: entity.ProviderID("id")},
 			wantErr: entity.ErrNotFound,
 		},
 		{
 			name: "error - database not available",
 			prepare: func(f *fields) {
-				f.repo.EXPECT().Delete(context.Background(), entity.ProviderId("id")).Return(entity.ErrInternalServerError)
+				f.repo.EXPECT().Delete(context.Background(), entity.ProviderID("id")).Return(entity.ErrInternalServerError)
 			},
-			args:    args{ctx: context.Background(), id: entity.ProviderId("id")},
+			args:    args{ctx: context.Background(), id: entity.ProviderID("id")},
 			wantErr: entity.ErrInternalServerError,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
+
 			f := fields{
 				repo: mock_repo.NewMockProviderRepo(ctrl),
 			}

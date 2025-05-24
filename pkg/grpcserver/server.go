@@ -23,7 +23,7 @@ type Server struct {
 	notify chan error
 }
 
-func New(ctx context.Context, opts ...Option) *Server {
+func New(opts ...Option) *Server {
 	s := &Server{
 		notify: make(chan error, 10),
 	}
@@ -45,6 +45,7 @@ func (s *Server) Run() {
 		lis, err := net.Listen("tcp", s.GRPC.Address)
 		if err != nil {
 			s.notify <- fmt.Errorf("grpc - New - Run - GRPC - net.Listen: %w", err)
+
 			return
 		}
 		s.notify <- s.GRPC.Server.Serve(lis)
@@ -53,6 +54,7 @@ func (s *Server) Run() {
 		lis, err := net.Listen("tcp", s.Gateway.Address)
 		if err != nil {
 			s.notify <- fmt.Errorf("grpc - New - Run - Gateway - net.Listen: %w", err)
+
 			return
 		}
 		s.notify <- s.Gateway.Server.Serve(lis)
@@ -65,7 +67,11 @@ func (s *Server) Notify() <-chan error {
 
 func (s *Server) Shutdown(ctx context.Context) error {
 	s.GRPC.Server.GracefulStop()
-	s.Gateway.Server.Shutdown(ctx)
+
+	err := s.Gateway.Server.Shutdown(ctx)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

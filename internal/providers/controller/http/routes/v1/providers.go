@@ -25,18 +25,18 @@ func NewRoutesProvider(apiGroup fiber.Router, uc usecase.Provider, l logger.Inte
 	{
 		providerGroup.Post("", r.providerCreate)
 		providerGroup.Get("", r.providerGetAll)
-		providerGroup.Put("/:providerId", r.providerUpdate)
-		providerGroup.Delete("/:providerId", r.providerDelete)
+		providerGroup.Put("/:providerID", r.providerUpdate)
+		providerGroup.Delete("/:providerID", r.providerDelete)
 	}
 }
 
 type providerCreateRequest struct {
-	ProviderId entity.ProviderId `json:"provider_id" validate:"required" example:"kuper"`
+	ProviderID entity.ProviderID `json:"provider_id" validate:"required" example:"kuper"`
 	Name       string            `json:"name" validate:"required" example:"Купер"`
 }
 
 type providerCreateResponse struct {
-	ProviderId entity.ProviderId `json:"provider_id" example:"kuper"`
+	ProviderID entity.ProviderID `json:"provider_id" example:"kuper"`
 }
 
 // @Summary		Create a new provider
@@ -66,25 +66,25 @@ func (c *controllerProvider) providerCreate(ctx *fiber.Ctx) error {
 		return errorResponse(ctx, http.StatusBadRequest, "bad request")
 	}
 
-	providerId, err := c.uc.Create(ctx.UserContext(), &entity.Provider{
-		ProviderId: requestBody.ProviderId,
+	providerID, err := c.uc.Create(ctx.UserContext(), &entity.Provider{
+		ProviderID: requestBody.ProviderID,
 		Name:       requestBody.Name,
 	})
 	if err != nil {
 		c.l.Error(fmt.Errorf("http - v1 - providerCreate - uc.Save: %w", err))
 
 		if errors.Is(err, entity.ErrAlreadyExists) {
-			return errorResponse(ctx, http.StatusConflict, fmt.Sprintf("%s: %s", requestBody.ProviderId, entity.ErrAlreadyExists.Error()))
+			return errorResponse(ctx, http.StatusConflict, fmt.Sprintf("%s: %s", requestBody.ProviderID, entity.ErrAlreadyExists.Error()))
 		}
 
 		return errorResponse(ctx, http.StatusInternalServerError, "provider database problems")
 	}
 
-	return ctx.Status(http.StatusCreated).JSON(providerCreateResponse{providerId})
+	return ctx.Status(http.StatusCreated).JSON(providerCreateResponse{providerID})
 }
 
 type providerEntityResponse struct {
-	ProviderId entity.ProviderId `json:"provider_id" example:"kuper"`
+	ProviderID entity.ProviderID `json:"provider_id" example:"kuper"`
 	Name       string            `json:"name" example:"Купер"`
 	CreatedAt  time.Time         `json:"created_at" example:"2025-05-08T06:07:14.810915Z"`
 	UpdatedAt  time.Time         `json:"updated_at" example:"2025-05-08T06:07:14.810915Z"`
@@ -120,7 +120,7 @@ func (c *controllerProvider) providerGetAll(ctx *fiber.Ctx) error {
 	return ctx.Status(http.StatusOK).JSON(providerListAllResponse(providersEntityResponse))
 }
 
-type paramProviderId entity.ProviderId
+type paramProviderID entity.ProviderID
 
 type providerUpdateRequest struct {
 	Name string `json:"name" example:"Купер"`
@@ -134,17 +134,17 @@ type providerUpdateResponse providerEntityResponse
 // @Tags			Provider
 // @Accept			json
 // @Produce		json
-// @Param			providerId	path		string					true	"Provider ID"
+// @Param			providerID	path		string					true	"Provider ID"
 // @Param			body		body		providerUpdateRequest	true	"Provider update parameters"
 // @Success		200			{object}	providerUpdateResponse
 // @Failure		400			{object}	responseError
 // @Failure		404			{object}	responseError
 // @Failure		500			{object}	responseError
-// @Router			/providers/{providerId} [put]
+// @Router			/providers/{providerID} [put]
 func (c *controllerProvider) providerUpdate(ctx *fiber.Ctx) error {
-	providerId := paramProviderId(ctx.Params("providerId"))
-	if providerId == "" {
-		c.l.Error(fmt.Errorf("http - v1 - providerUpdate - providerId not provided"))
+	providerID := paramProviderID(ctx.Params("providerID"))
+	if providerID == "" {
+		c.l.Error(fmt.Errorf("http - v1 - providerUpdate - providerID not provided"))
 
 		return errorResponse(ctx, http.StatusBadRequest, "bad request")
 	}
@@ -163,7 +163,7 @@ func (c *controllerProvider) providerUpdate(ctx *fiber.Ctx) error {
 	}
 
 	providerUpdated, err := c.uc.Update(ctx.UserContext(),
-		entity.ProviderId(providerId),
+		entity.ProviderID(providerID),
 		&entity.Provider{
 			Name: requestBody.Name, // TODO: do not update if field "name" is not passed
 		})
@@ -171,7 +171,7 @@ func (c *controllerProvider) providerUpdate(ctx *fiber.Ctx) error {
 		c.l.Error(fmt.Errorf("http - v1 - providerUpdate - uc.Update: %w", err))
 
 		if errors.Is(err, entity.ErrNotFound) {
-			return errorResponse(ctx, http.StatusNotFound, fmt.Sprintf("%s: %s", providerId, entity.ErrNotFound.Error()))
+			return errorResponse(ctx, http.StatusNotFound, fmt.Sprintf("%s: %s", providerID, entity.ErrNotFound.Error()))
 		}
 
 		return errorResponse(ctx, http.StatusInternalServerError, "provider database problems")
@@ -188,26 +188,26 @@ func (c *controllerProvider) providerUpdate(ctx *fiber.Ctx) error {
 // @Tags			Provider
 // @Accept			json
 // @Produce		json
-// @Param			providerId	path	string	true	"Provider ID"
+// @Param			providerID	path	string	true	"Provider ID"
 // @Success		204
 // @Failure		400	{object}	responseError
 // @Failure		404	{object}	responseError
 // @Failure		500	{object}	responseError
-// @Router			/providers/{providerId} [delete]
+// @Router			/providers/{providerID} [delete]
 func (c *controllerProvider) providerDelete(ctx *fiber.Ctx) error {
-	providerId := paramProviderId(ctx.Params("providerId"))
-	if providerId == "" {
-		c.l.Error(fmt.Errorf("http - v1 - providerDelete - providerId not provided"))
+	providerID := paramProviderID(ctx.Params("providerID"))
+	if providerID == "" {
+		c.l.Error(fmt.Errorf("http - v1 - providerDelete - providerID not provided"))
 
 		return errorResponse(ctx, http.StatusBadRequest, "bad request")
 	}
 
-	err := c.uc.Delete(ctx.UserContext(), entity.ProviderId(providerId))
+	err := c.uc.Delete(ctx.UserContext(), entity.ProviderID(providerID))
 	if err != nil {
 		c.l.Error(fmt.Errorf("http - v1 - providerDelete - uc.Delete: %w", err))
 
 		if errors.Is(err, entity.ErrNotFound) {
-			return errorResponse(ctx, http.StatusNotFound, fmt.Sprintf("%s: %s", providerId, entity.ErrNotFound.Error()))
+			return errorResponse(ctx, http.StatusNotFound, fmt.Sprintf("%s: %s", providerID, entity.ErrNotFound.Error()))
 		}
 
 		return errorResponse(ctx, http.StatusInternalServerError, "provider database problems")

@@ -55,6 +55,7 @@ func New(url string, l logger.Interface, opts ...Option) (*Postgres, error) {
 		l.Info("Postgres is trying to connect, attempts left: %d", pg.connAttempts)
 
 		time.Sleep(pg.connRetryTimeout)
+		
 		pg.connAttempts--
 	}
 

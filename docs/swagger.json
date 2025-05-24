@@ -93,7 +93,7 @@
                 }
             }
         },
-        "/providers/{providerId}": {
+        "/providers/{providerID}": {
             "put": {
                 "description": "Updates a delivery provider",
                 "consumes": [
@@ -111,7 +111,7 @@
                     {
                         "type": "string",
                         "description": "Provider ID",
-                        "name": "providerId",
+                        "name": "providerID",
                         "in": "path",
                         "required": true
                     },
@@ -169,7 +169,7 @@
                     {
                         "type": "string",
                         "description": "Provider ID",
-                        "name": "providerId",
+                        "name": "providerID",
                         "in": "path",
                         "required": true
                     }

@@ -24,7 +24,7 @@ func (pg *PostgresRepo) Store(ctx context.Context, p *entity.Provider) error {
 	query, args, err := pg.Builder.
 		Insert("providers").
 		Columns("provider_id, name").
-		Values(p.ProviderId, p.Name).
+		Values(p.ProviderID, p.Name).
 		ToSql()
 	if err != nil {
 		return fmt.Errorf("PostgresRepo - Store - pg.Builder: %w", err)
@@ -64,7 +64,7 @@ func (pg *PostgresRepo) GetAll(ctx context.Context) ([]*entity.Provider, error) 
 	return providers, nil
 }
 
-func (pg *PostgresRepo) Update(ctx context.Context, id entity.ProviderId, p *entity.Provider) (*entity.Provider, error) {
+func (pg *PostgresRepo) Update(ctx context.Context, id entity.ProviderID, p *entity.Provider) (*entity.Provider, error) {
 	query, args, err := pg.Builder.
 		Update("providers").
 		Set(
@@ -92,7 +92,7 @@ func (pg *PostgresRepo) Update(ctx context.Context, id entity.ProviderId, p *ent
 	return provider, nil
 }
 
-func (pg *PostgresRepo) Delete(ctx context.Context, id entity.ProviderId) error {
+func (pg *PostgresRepo) Delete(ctx context.Context, id entity.ProviderID) error {
 	query, args, err := pg.Builder.
 		Delete("providers").
 		Where("provider_id = ?", id).

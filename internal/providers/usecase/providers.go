@@ -18,12 +18,12 @@ func NewUseCaseProviders(r repo.ProviderRepo) *UseCaseProviders {
 	}
 }
 
-func (uc *UseCaseProviders) Create(ctx context.Context, provider *entity.Provider) (entity.ProviderId, error) {
+func (uc *UseCaseProviders) Create(ctx context.Context, provider *entity.Provider) (entity.ProviderID, error) {
 	err := uc.repo.Store(ctx, provider)
 	if err != nil {
 		return "", fmt.Errorf("UseCaseProviders - Save - uc.repo.Store: %w", err)
 	}
-	return provider.ProviderId, nil
+	return provider.ProviderID, nil
 }
 
 func (uc *UseCaseProviders) ListAll(ctx context.Context) ([]*entity.Provider, error) {
@@ -35,8 +35,8 @@ func (uc *UseCaseProviders) ListAll(ctx context.Context) ([]*entity.Provider, er
 	return providers, nil
 }
 
-func (uc *UseCaseProviders) Update(ctx context.Context, providerId entity.ProviderId, provider *entity.Provider) (*entity.Provider, error) {
-	providerUpdated, err := uc.repo.Update(ctx, providerId, provider)
+func (uc *UseCaseProviders) Update(ctx context.Context, providerID entity.ProviderID, provider *entity.Provider) (*entity.Provider, error) {
+	providerUpdated, err := uc.repo.Update(ctx, providerID, provider)
 	if err != nil {
 		return nil, fmt.Errorf("UseCaseProviders - Update - uc.repo.Update: %w", err)
 	}
@@ -44,8 +44,8 @@ func (uc *UseCaseProviders) Update(ctx context.Context, providerId entity.Provid
 	return providerUpdated, nil
 }
 
-func (uc *UseCaseProviders) Delete(ctx context.Context, providerId entity.ProviderId) error {
-	err := uc.repo.Delete(ctx, providerId)
+func (uc *UseCaseProviders) Delete(ctx context.Context, providerID entity.ProviderID) error {
+	err := uc.repo.Delete(ctx, providerID)
 	if err != nil {
 		return fmt.Errorf("UseCaseProviders - Delete - uc.repo.Delete: %w", err)
 	}

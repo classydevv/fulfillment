@@ -26,7 +26,7 @@ const (
 
 type Provider struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ProviderId    string                 `protobuf:"bytes,1,opt,name=provider_id,proto3" json:"provider_id,omitempty"`
+	ProviderID    string                 `protobuf:"bytes,1,opt,name=provider_id,proto3" json:"provider_id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=created_at,proto3" json:"created_at,omitempty"`
 	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=updated_at,proto3" json:"updated_at,omitempty"`
@@ -64,9 +64,9 @@ func (*Provider) Descriptor() ([]byte, []int) {
 	return file_api_providers_messages_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Provider) GetProviderId() string {
+func (x *Provider) GetProviderID() string {
 	if x != nil {
-		return x.ProviderId
+		return x.ProviderID
 	}
 	return ""
 }
@@ -94,7 +94,7 @@ func (x *Provider) GetUpdatedAt() *timestamppb.Timestamp {
 
 type ProviderCreateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ProviderId    string                 `protobuf:"bytes,1,opt,name=provider_id,proto3" json:"provider_id,omitempty"`
+	ProviderID    string                 `protobuf:"bytes,1,opt,name=provider_id,proto3" json:"provider_id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -130,9 +130,9 @@ func (*ProviderCreateRequest) Descriptor() ([]byte, []int) {
 	return file_api_providers_messages_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *ProviderCreateRequest) GetProviderId() string {
+func (x *ProviderCreateRequest) GetProviderID() string {
 	if x != nil {
-		return x.ProviderId
+		return x.ProviderID
 	}
 	return ""
 }
@@ -146,7 +146,7 @@ func (x *ProviderCreateRequest) GetName() string {
 
 type ProviderCreateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ProviderId    string                 `protobuf:"bytes,1,opt,name=provider_id,proto3" json:"provider_id,omitempty"`
+	ProviderID    string                 `protobuf:"bytes,1,opt,name=provider_id,proto3" json:"provider_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -181,9 +181,9 @@ func (*ProviderCreateResponse) Descriptor() ([]byte, []int) {
 	return file_api_providers_messages_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *ProviderCreateResponse) GetProviderId() string {
+func (x *ProviderCreateResponse) GetProviderID() string {
 	if x != nil {
-		return x.ProviderId
+		return x.ProviderID
 	}
 	return ""
 }
@@ -270,7 +270,7 @@ func (x *ProviderListAllResponse) GetProviders() []*Provider {
 
 type ProviderUpdateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ProviderId    string                 `protobuf:"bytes,1,opt,name=provider_id,proto3" json:"provider_id,omitempty"`
+	ProviderID    string                 `protobuf:"bytes,1,opt,name=provider_id,proto3" json:"provider_id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -306,9 +306,9 @@ func (*ProviderUpdateRequest) Descriptor() ([]byte, []int) {
 	return file_api_providers_messages_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *ProviderUpdateRequest) GetProviderId() string {
+func (x *ProviderUpdateRequest) GetProviderID() string {
 	if x != nil {
-		return x.ProviderId
+		return x.ProviderID
 	}
 	return ""
 }
@@ -366,7 +366,7 @@ func (x *ProviderUpdateResponse) GetProvider() *Provider {
 
 type ProviderDeleteRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ProviderId    string                 `protobuf:"bytes,1,opt,name=provider_id,proto3" json:"provider_id,omitempty"`
+	ProviderID    string                 `protobuf:"bytes,1,opt,name=provider_id,proto3" json:"provider_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -401,9 +401,9 @@ func (*ProviderDeleteRequest) Descriptor() ([]byte, []int) {
 	return file_api_providers_messages_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *ProviderDeleteRequest) GetProviderId() string {
+func (x *ProviderDeleteRequest) GetProviderID() string {
 	if x != nil {
-		return x.ProviderId
+		return x.ProviderID
 	}
 	return ""
 }

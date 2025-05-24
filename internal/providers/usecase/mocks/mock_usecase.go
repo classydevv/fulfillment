@@ -42,10 +42,10 @@ func (m *MockProvider) EXPECT() *MockProviderMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockProvider) Create(arg0 context.Context, arg1 *entity.Provider) (entity.ProviderId, error) {
+func (m *MockProvider) Create(arg0 context.Context, arg1 *entity.Provider) (entity.ProviderID, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", arg0, arg1)
-	ret0, _ := ret[0].(entity.ProviderId)
+	ret0, _ := ret[0].(entity.ProviderID)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -57,7 +57,7 @@ func (mr *MockProviderMockRecorder) Create(arg0, arg1 any) *gomock.Call {
 }
 
 // Delete mocks base method.
-func (m *MockProvider) Delete(arg0 context.Context, arg1 entity.ProviderId) error {
+func (m *MockProvider) Delete(arg0 context.Context, arg1 entity.ProviderID) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Delete", arg0, arg1)
 	ret0, _ := ret[0].(error)
@@ -86,7 +86,7 @@ func (mr *MockProviderMockRecorder) ListAll(arg0 any) *gomock.Call {
 }
 
 // Update mocks base method.
-func (m *MockProvider) Update(arg0 context.Context, arg1 entity.ProviderId, arg2 *entity.Provider) (*entity.Provider, error) {
+func (m *MockProvider) Update(arg0 context.Context, arg1 entity.ProviderID, arg2 *entity.Provider) (*entity.Provider, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", arg0, arg1, arg2)
 	ret0, _ := ret[0].(*entity.Provider)

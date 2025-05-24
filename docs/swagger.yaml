@@ -124,7 +124,7 @@ paths:
       summary: Create a new provider
       tags:
       - Provider
-  /providers/{providerId}:
+  /providers/{providerID}:
     delete:
       consumes:
       - application/json
@@ -133,7 +133,7 @@ paths:
       parameters:
       - description: Provider ID
         in: path
-        name: providerId
+        name: providerID
         required: true
         type: string
       produces:
@@ -164,7 +164,7 @@ paths:
       parameters:
       - description: Provider ID
         in: path
-        name: providerId
+        name: providerID
         required: true
         type: string
       - description: Provider update parameters

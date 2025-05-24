@@ -36,7 +36,7 @@ func NewControllerProvider(ctx context.Context, s *grpcserver.Server, uc usecase
 
 func (c *controllerProvider) ProviderCreate(ctx context.Context, req *pb.ProviderCreateRequest) (*pb.ProviderCreateResponse, error) {
 	provider := new(entity.Provider)
-	provider.ProviderId = entity.ProviderId(req.GetProviderId())
+	provider.ProviderID = entity.ProviderID(req.GetProviderID())
 	provider.Name = req.GetName()
 
 	if err := validateProviderCreateRequest(req); err != nil {
@@ -45,7 +45,7 @@ func (c *controllerProvider) ProviderCreate(ctx context.Context, req *pb.Provide
 		return nil, fmt.Errorf("grpc - v1 - CreateProvider - validateProviderCreateRequest: %w", err)
 	}
 
-	providerId, err := c.uc.Create(ctx, provider)
+	providerID, err := c.uc.Create(ctx, provider)
 	if err != nil {
 		c.l.Error(fmt.Errorf("grpc - v1 - ProviderCreate - uc.Create: %w", err))
 
@@ -53,15 +53,16 @@ func (c *controllerProvider) ProviderCreate(ctx context.Context, req *pb.Provide
 	}
 
 	return &pb.ProviderCreateResponse{
-		ProviderId: string(providerId),
+		ProviderID: string(providerID),
 	}, nil
 }
 
 func validateProviderCreateRequest(req *pb.ProviderCreateRequest) error {
-	providerId := req.GetProviderId()
+	providerID := req.GetProviderID()
 	name := req.GetName()
 	var violations []*errdetails.BadRequest_FieldViolation
-	if providerId == "" {
+	
+	if providerID == "" {
 		violations = append(violations, &errdetails.BadRequest_FieldViolation{
 			Field:       "provider_id",
 			Description: "empty",
@@ -100,7 +101,7 @@ func (c *controllerProvider) ProviderListAll(ctx context.Context, _ *pb.Provider
 
 	for i, provider := range providersEntity {
 		providers[i] = &pb.Provider{
-			ProviderId: string(provider.ProviderId),
+			ProviderID: string(provider.ProviderID),
 			Name:       provider.Name,
 			CreatedAt:  timestamppb.New(provider.CreatedAt),
 			UpdatedAt:  timestamppb.New(provider.UpdatedAt),
@@ -114,7 +115,7 @@ func (c *controllerProvider) ProviderListAll(ctx context.Context, _ *pb.Provider
 
 func (c *controllerProvider) ProviderUpdate(ctx context.Context, req *pb.ProviderUpdateRequest) (*pb.ProviderUpdateResponse, error) {
 	provider := new(entity.Provider)
-	provider.ProviderId = entity.ProviderId(req.GetProviderId())
+	provider.ProviderID = entity.ProviderID(req.GetProviderID())
 	provider.Name = req.GetName()
 
 	if err := validateProviderUpdateRequest(req); err != nil {
@@ -123,7 +124,7 @@ func (c *controllerProvider) ProviderUpdate(ctx context.Context, req *pb.Provide
 		return nil, fmt.Errorf("grpc - v1 - ProviderUpdate - validateProviderUpdateRequest: %w", err)
 	}
 
-	providerUpdated, err := c.uc.Update(ctx, provider.ProviderId, provider)
+	providerUpdated, err := c.uc.Update(ctx, provider.ProviderID, provider)
 	if err != nil {
 		c.l.Error(fmt.Errorf("grpc - v1 - ProviderUpdate - uc.Update: %w", err))
 
@@ -132,21 +133,23 @@ func (c *controllerProvider) ProviderUpdate(ctx context.Context, req *pb.Provide
 
 	return &pb.ProviderUpdateResponse{
 		Provider: &pb.Provider{
-			ProviderId: string(providerUpdated.ProviderId),
+			ProviderID: string(providerUpdated.ProviderID),
 			Name:       providerUpdated.Name,
 		},
 	}, nil
 }
 
 func validateProviderUpdateRequest(req *pb.ProviderUpdateRequest) error {
-	providerId := req.GetProviderId()
+	providerID := req.GetProviderID()
 	var violations []*errdetails.BadRequest_FieldViolation
-	if providerId == "" {
+
+	if providerID == "" {
 		violations = append(violations, &errdetails.BadRequest_FieldViolation{
 			Field:       "provider_id",
 			Description: "empty",
 		})
 	}
+
 	if len(violations) > 0 {
 		st, err := status.New(codes.InvalidArgument, codes.InvalidArgument.String()).WithDetails(
 			&errdetails.BadRequest{
@@ -163,7 +166,7 @@ func validateProviderUpdateRequest(req *pb.ProviderUpdateRequest) error {
 }
 
 func (c *controllerProvider) ProviderDelete(ctx context.Context, req *pb.ProviderDeleteRequest) (*pb.ProviderDeleteResponse, error) {
-	providerId := entity.ProviderId(req.GetProviderId())
+	providerID := entity.ProviderID(req.GetProviderID())
 
 	if err := validateProviderDeleteRequest(req); err != nil {
 		c.l.Error(fmt.Errorf("grpc - v1 - ProviderDelete - validateProviderDeleteRequest: %w", err))
@@ -171,7 +174,7 @@ func (c *controllerProvider) ProviderDelete(ctx context.Context, req *pb.Provide
 		return nil, fmt.Errorf("grpc - v1 - ProviderDelete - validateProviderDeleteRequest: %w", err)
 	}
 
-	err := c.uc.Delete(ctx, providerId)
+	err := c.uc.Delete(ctx, providerID)
 	if err != nil {
 		c.l.Error(fmt.Errorf("grpc - v1 - ProviderDelete - uc.Delete: %w", err))
 
@@ -182,9 +185,9 @@ func (c *controllerProvider) ProviderDelete(ctx context.Context, req *pb.Provide
 }
 
 func validateProviderDeleteRequest(req *pb.ProviderDeleteRequest) error {
-	providerId := req.GetProviderId()
+	providerID := req.GetProviderID()
 	var violations []*errdetails.BadRequest_FieldViolation
-	if providerId == "" {
+	if providerID == "" {
 		violations = append(violations, &errdetails.BadRequest_FieldViolation{
 			Field:       "provider_id",
 			Description: "empty",

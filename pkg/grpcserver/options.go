@@ -6,13 +6,13 @@ import (
 
 type Option func(*Server)
 
-func AddressGRPC(host string, port string) Option {
+func AddressGRPC(host, port string) Option {
 	return func(s *Server) {
 		s.GRPC.Address = net.JoinHostPort(host, port)
 	}
 }
 
-func AddressGateway(host string, port string) Option {
+func AddressGateway(host, port string) Option {
 	return func(s *Server) {
 		s.Gateway.Address = net.JoinHostPort(host, port)
 	}

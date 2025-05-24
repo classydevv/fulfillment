@@ -91,7 +91,7 @@ func request_ProvidersService_ProviderUpdate_0(ctx context.Context, marshaler ru
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "provider_id")
 	}
-	protoReq.ProviderId, err = runtime.String(val)
+	protoReq.ProviderID, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "provider_id", err)
 	}
@@ -112,7 +112,7 @@ func local_request_ProvidersService_ProviderUpdate_0(ctx context.Context, marsha
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "provider_id")
 	}
-	protoReq.ProviderId, err = runtime.String(val)
+	protoReq.ProviderID, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "provider_id", err)
 	}
@@ -131,7 +131,7 @@ func request_ProvidersService_ProviderDelete_0(ctx context.Context, marshaler ru
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "provider_id")
 	}
-	protoReq.ProviderId, err = runtime.String(val)
+	protoReq.ProviderID, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "provider_id", err)
 	}
@@ -149,7 +149,7 @@ func local_request_ProvidersService_ProviderDelete_0(ctx context.Context, marsha
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "provider_id")
 	}
-	protoReq.ProviderId, err = runtime.String(val)
+	protoReq.ProviderID, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "provider_id", err)
 	}

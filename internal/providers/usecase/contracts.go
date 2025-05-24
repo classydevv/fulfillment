@@ -10,9 +10,9 @@ import (
 
 type (
 	Provider interface {
-		Create(context.Context, *entity.Provider) (entity.ProviderId, error)
+		Create(context.Context, *entity.Provider) (entity.ProviderID, error)
 		ListAll(context.Context) ([]*entity.Provider, error)
-		Update(context.Context, entity.ProviderId, *entity.Provider) (*entity.Provider, error)
-		Delete(context.Context, entity.ProviderId) error
+		Update(context.Context, entity.ProviderID, *entity.Provider) (*entity.Provider, error)
+		Delete(context.Context, entity.ProviderID) error
 	}
 )

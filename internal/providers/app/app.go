@@ -52,7 +52,6 @@ func Run(cfg *config.Config) {
 
 	// GRPC Server
 	grpcServer := grpcserver.New(
-		ctx,
 		grpcserver.AddressGRPC("", cfg.GRPC.Port),
 		grpcserver.AddressGateway("", cfg.GRPC.GatewayPort),
 	)

@@ -42,7 +42,7 @@ func (m *MockProviderRepo) EXPECT() *MockProviderRepoMockRecorder {
 }
 
 // Delete mocks base method.
-func (m *MockProviderRepo) Delete(arg0 context.Context, arg1 entity.ProviderId) error {
+func (m *MockProviderRepo) Delete(arg0 context.Context, arg1 entity.ProviderID) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Delete", arg0, arg1)
 	ret0, _ := ret[0].(error)
@@ -85,7 +85,7 @@ func (mr *MockProviderRepoMockRecorder) Store(arg0, arg1 any) *gomock.Call {
 }
 
 // Update mocks base method.
-func (m *MockProviderRepo) Update(arg0 context.Context, arg1 entity.ProviderId, arg2 *entity.Provider) (*entity.Provider, error) {
+func (m *MockProviderRepo) Update(arg0 context.Context, arg1 entity.ProviderID, arg2 *entity.Provider) (*entity.Provider, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", arg0, arg1, arg2)
 	ret0, _ := ret[0].(*entity.Provider)
